@@ -13,7 +13,7 @@ void main() {
     /// can use [MyApp] while mocking the providers
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => Target()),
+        ChangeNotifierProvider(create: (_) => TargetListStates()),
       ],
       child: MyApp(),
     ),
@@ -36,14 +36,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(backgroundColor: Colors.white),
       home: Scaffold(
         resizeToAvoidBottomInset: false,
-        body: Column(
-          children: [
-            TargetList(),
-            ElevatedButton(
-                child: Text('Change'),
-                onPressed: () => context.read<Target>().changeTarget('qweqwe')),
-          ],
-        ),
+        body: TargetList(),
       ),
     );
   }
