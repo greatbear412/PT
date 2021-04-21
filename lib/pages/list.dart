@@ -27,13 +27,19 @@ class _TargetListState extends State<TargetList> {
     final targetListContext = context.read<TargetListStates>();
 
     return Container(
-      decoration: BoxDecoration(color: Utils.getColorBg()),
+      decoration: BoxDecoration(
+          image: DecorationImage(
+              // TODO: 根据日期切换图片
+              image: AssetImage("imgs/bg/1.jpeg"),
+              fit: BoxFit.cover)),
       width: double.infinity,
       child: Flex(
           direction: Axis.vertical,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: targetListContext.taskList
-              .map((target) => Expanded(
-                    flex: 1,
+              .map((target) => FractionallySizedBox(
+                    widthFactor: 1,
+                    // heightFactor: 0.33,
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(30, 50, 30, 50),
                       child: TargetInfoBox(target),
@@ -51,25 +57,33 @@ class TargetInfoBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(mainAxisSize: MainAxisSize.max, children: [
-      TargetInfoRedFlag(targetContext),
-      Expanded(
-          flex: 1,
-          child: Container(
-            decoration: BoxDecoration(color: Utils.transStr('0b1632')),
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
-              child: Flex(direction: Axis.horizontal, children: [
-                Expanded(flex: 3, child: TargetInfoText(targetContext)),
-                Expanded(
-                    flex: 1,
-                    child: Center(
-                      child: Image(image: AssetImage("imgs/rist.png")),
-                    ))
-              ]),
-            ),
-          ))
-    ]);
+    return Container(
+      decoration: BoxDecoration(boxShadow: [
+        //阴影
+        BoxShadow(
+            color: Colors.black54, offset: Offset(0.0, 2.0), blurRadius: 8.0)
+      ]),
+      child: Row(mainAxisSize: MainAxisSize.max, children: [
+        TargetInfoRedFlag(targetContext),
+        Expanded(
+            flex: 1,
+            child: Container(
+              decoration: BoxDecoration(color: Utils.transStr('0b1632')),
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
+                child: Flex(direction: Axis.horizontal, children: [
+                  Expanded(flex: 3, child: TargetInfoText(targetContext)),
+                  Expanded(
+                      flex: 1,
+                      child: FractionallySizedBox(
+                        widthFactor: .7,
+                        child: Image(image: AssetImage("imgs/rist.png")),
+                      ))
+                ]),
+              ),
+            ))
+      ]),
+    );
   }
 }
 
@@ -82,9 +96,9 @@ class TargetInfoRedFlag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-          color:
-              Utils.getPercentColor(targetContext.finish, targetContext.days)),
+      decoration: BoxDecoration(color: Colors.red
+          // Utils.getPercentColor(targetContext.finish, targetContext.days)
+          ),
       width: 10,
     );
   }
@@ -102,15 +116,25 @@ class TargetInfoText extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           MainText(targetContext.title),
-          StyleText(
-              targetContext.finish.toString() +
-                  '/' +
-                  targetContext.days.toString(),
-              TextStyle(
-                color: Utils.transStr(color_normal),
-                fontSize: 20,
-                fontWeight: FontWeight.w300,
-              ))
+          TargetInfoSubText(targetContext)
         ]);
+  }
+}
+
+class TargetInfoSubText extends StatelessWidget {
+  final Target targetContext;
+  TargetInfoSubText(this.targetContext);
+
+  @override
+  Widget build(BuildContext context) {
+    String content =
+        targetContext.finish.toString() + '/' + targetContext.days.toString();
+    return StyleText(
+        content,
+        TextStyle(
+          color: Utils.transStr(color_normal),
+          fontSize: 20,
+          fontWeight: FontWeight.w300,
+        ));
   }
 }

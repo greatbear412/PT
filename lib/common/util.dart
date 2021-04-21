@@ -26,4 +26,15 @@ class Utils {
       return transStr(color_success);
     }
   }
+
+  // static String getPercentText(int val, int target, ) {
+  //   var percent = val / target;
+  //   if (percent < 0.33) {
+  //     return transStr(color_error);
+  //   } else if (percent < 0.66) {
+  //     return transStr(color_good);
+  //   } else {
+  //     return transStr(color_success);
+  //   }
+  // }
 }

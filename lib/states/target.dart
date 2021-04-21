@@ -82,14 +82,16 @@ class Target {
   String title;
   int days;
   int finish;
+  bool finishToday;
+  DateTime startTime;
 
   /// `@status`: 1. 正常； 2.失败； 3. 删除
   int status;
-  String lastFinish;
+  DateTime lastFinish;
 
   Target(this.id, this.title, this.days,
-      {this.finish = 0, this.status = 1, this.lastFinish = ''})
-      : super();
+      {this.finish = 0, this.status = 1, this.finishToday = false})
+      : startTime = DateTime.now();
 
   void sign() {
     this.finish += 1;
