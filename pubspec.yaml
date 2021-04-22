@@ -30,6 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   shared_preferences: ^0.5.7+3
   provider:
+  date_format:
 
 dev_dependencies:
   flutter_test:
@@ -50,9 +51,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - imgs/rist.png
-    - imgs/bg/1.jpeg
-    - imgs/bg/2.jpeg
+    - imgs/fist.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

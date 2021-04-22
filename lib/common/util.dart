@@ -1,40 +1,53 @@
 import 'package:flutter/material.dart';
-
-const color_main = '060a27';
-const color_normal = 'C5C6B6';
-const color_warning = 'FFBC42';
-const color_good = '84B1ED';
-const color_success = '67D5B5';
-const color_error = 'ff1b43';
+import 'package:date_format/date_format.dart';
+import '../common/constant.dart';
+import 'dart:math';
 
 class Utils {
-  static Color transStr(String c) {
-    return Color(int.parse(c, radix: 16)).withAlpha(255);
+  static Random rng = new Random();
+
+  static Color transStr(String c, {alpha = 255}) {
+    return Color(int.parse(c, radix: 16)).withAlpha(alpha);
   }
 
   static Color getColorBg() {
-    return transStr(color_main);
+    return transStr(Constants.colorMain);
   }
 
   static Color getPercentColor(int val, int target) {
     var percent = val / target;
     if (percent < 0.33) {
-      return transStr(color_error);
+      return transStr(Constants.colorError);
     } else if (percent < 0.66) {
-      return transStr(color_good);
+      return transStr(Constants.colorGood);
     } else {
-      return transStr(color_success);
+      return transStr(Constants.colorSuccess);
     }
   }
 
-  // static String getPercentText(int val, int target, ) {
-  //   var percent = val / target;
-  //   if (percent < 0.33) {
-  //     return transStr(color_error);
-  //   } else if (percent < 0.66) {
-  //     return transStr(color_good);
-  //   } else {
-  //     return transStr(color_success);
-  //   }
-  // }
+  static String getPercentText(
+    int val,
+    int target,
+  ) {
+    var percent = val / target;
+    if (percent < 0.33) {
+      var i = getRandomInit(Constants.courageList['low'].length);
+      return Constants.courageList['low'][i];
+    } else if (percent < 0.66) {
+      var i = getRandomInit(Constants.courageList['low'].length);
+      return Constants.courageList['low'][i];
+    } else {
+      var i = getRandomInit(Constants.courageList['low'].length);
+      return Constants.courageList['low'][i];
+    }
+  }
+
+  static int getDayInWeek() {
+    var day = formatDate(DateTime.now(), [DD]);
+    return Constants.days[day];
+  }
+
+  static int getRandomInit(int src) {
+    return rng.nextInt(src);
+  }
 }

@@ -8,10 +8,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import '../common/constant.dart';
 import '../states/target.dart';
 import '../common/util.dart';
 import '../components/text.dart';
+import '../components/common.dart';
 
 class TargetList extends StatefulWidget {
   @override
@@ -24,29 +25,57 @@ class _TargetListState extends State<TargetList> {
     final targetListContext = context.watch<TargetListStates>();
     final List<Target> targetList = targetListContext.getValidTarget();
 
-// TODO: 依据有效任务数量渲染;是否跳转初始页
-    return Container(
-      decoration: BoxDecoration(
-          image: DecorationImage(
-              // TODO: 根据日期切换图片
-              image: AssetImage("imgs/bg/1.jpeg"),
-              fit: BoxFit.cover)),
-      width: double.infinity,
-      alignment: Alignment.center,
-      child: Flex(
-          clipBehavior: Clip.hardEdge,
-          direction: Axis.vertical,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: targetList
-              .map((target) => Flexible(
-                    fit: FlexFit.loose,
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(30, 50, 30, 50),
-                      child: TargetInfoBox(target, targetListContext),
-                    ),
-                  ))
-              .toList()),
-    );
+    if (targetList.length == 0) {
+      // TODO: 跳转初始页
+      return Container();
+    } else {
+      // 还有进行中的
+      if (targetList.any((Target target) => target.finishToday == false)) {
+        return Container(
+          decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: NetworkImage(Constants.bgUrl), fit: BoxFit.cover)),
+          width: double.infinity,
+          alignment: Alignment.centerLeft,
+          child: Flex(
+              clipBehavior: Clip.hardEdge,
+              direction: Axis.vertical,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: targetList
+                  .map((target) => Flexible(
+                        fit: FlexFit.loose,
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(30, 50, 30, 50),
+                          child: TargetInfoBox(target, targetListContext),
+                        ),
+                      ))
+                  .toList()),
+        );
+      } else {
+        // 全部完成
+        return Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: NetworkImage(Constants.bgUrl), fit: BoxFit.cover)),
+            width: double.infinity,
+            alignment: Alignment.bottomCenter,
+            padding: EdgeInsets.only(bottom: 20),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                  decoration: BoxDecoration(
+                      color: Utils.transStr('166675', alpha: 200)),
+                  padding: EdgeInsets.all(10),
+                  child: StyleText(
+                      'Nice！已经全部完成。',
+                      TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                      ))),
+            ));
+      }
+    }
   }
 }
 
@@ -56,40 +85,64 @@ class TargetInfoBox extends StatelessWidget {
   final TargetListStates targetListContext;
   TargetInfoBox(this.targetContext, this.targetListContext);
 
-// TODO: 依据状态渲染
   @override
   Widget build(BuildContext context) {
-    return Container(
-        decoration: BoxDecoration(boxShadow: [
-          //阴影
-          BoxShadow(
-              color: Colors.black54, offset: Offset(0.0, 4.0), blurRadius: 12.0)
-        ]),
-        child: ConstrainedBox(
-          constraints: BoxConstraints(
-              minWidth: double.infinity, //宽度尽可能大
-              maxHeight: 120.0 //最小高度为50像素
-              ),
-          child: Container(
-              child: Row(mainAxisSize: MainAxisSize.max, children: [
+    // 已完成
+    if (targetContext.finishToday) {
+      var content = targetContext.title +
+          '(' +
+          targetContext.finish.toString() +
+          '/' +
+          targetContext.days.toString() +
+          ')';
+      return ConstrainedBox(
+        constraints: BoxConstraints(maxHeight: 60.0),
+        child: Row(
+          children: [
             TargetInfoRedFlag(targetContext),
             Expanded(
-                flex: 1,
-                child: Container(
-                  decoration: BoxDecoration(color: Utils.transStr('0b1632')),
-                  child: Padding(
-                    padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
-                    child: Flex(direction: Axis.horizontal, children: [
-                      Expanded(flex: 3, child: TargetInfoText(targetContext)),
-                      Expanded(
-                          flex: 1,
-                          child:
-                              TargetInfoSign(targetContext, targetListContext))
-                    ]),
-                  ),
-                ))
-          ])),
-        ));
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                child: Expanded(child: MainText(content)),
+              ),
+            )
+          ],
+        ),
+      );
+    } else {
+      // 进行中
+      return Container(
+          decoration: BoxDecoration(boxShadow: [
+            //阴影
+            BoxShadow(
+                color: Colors.black54,
+                offset: Offset(0.0, 4.0),
+                blurRadius: 12.0)
+          ]),
+          child: ConstrainedBox(
+            constraints:
+                BoxConstraints(minWidth: double.infinity, maxHeight: 120.0),
+            child: Container(
+                child: Row(mainAxisSize: MainAxisSize.max, children: [
+              TargetInfoRedFlag(targetContext),
+              Expanded(
+                  flex: 1,
+                  child: Container(
+                    decoration: BoxDecoration(color: Utils.transStr('0b1632')),
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
+                      child: Flex(direction: Axis.horizontal, children: [
+                        Expanded(flex: 3, child: TargetInfoText(targetContext)),
+                        Expanded(
+                            flex: 1,
+                            child: TargetInfoSign(
+                                targetContext, targetListContext))
+                      ]),
+                    ),
+                  ))
+            ])),
+          ));
+    }
   }
 }
 
@@ -109,7 +162,7 @@ class TargetInfoRedFlag extends StatelessWidget {
   }
 }
 
-/// 文字包装
+/// 任务标题
 class TargetInfoText extends StatelessWidget {
   final Target targetContext;
   TargetInfoText(this.targetContext);
@@ -126,6 +179,7 @@ class TargetInfoText extends StatelessWidget {
   }
 }
 
+// 任务信息
 class TargetInfoSubText extends StatelessWidget {
   final Target targetContext;
   TargetInfoSubText(this.targetContext);
@@ -133,38 +187,88 @@ class TargetInfoSubText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String content =
-        targetContext.finish.toString() + '/' + targetContext.days.toString();
+        Utils.getPercentText(targetContext.finish, targetContext.days);
     return StyleText(
-        content,
-        TextStyle(
-          color: Utils.transStr(color_normal),
-          fontSize: 20,
-          fontWeight: FontWeight.w300,
-        ));
+      content,
+      TextStyle(
+        color: Utils.transStr(Constants.colorNormal),
+        fontSize: 12,
+        fontWeight: FontWeight.w300,
+      ),
+      lines: 3,
+    );
   }
 }
 
-class TargetInfoSign extends StatelessWidget {
+// 签到按钮
+class TargetInfoSign extends StatefulWidget {
   final Target targetContext;
   final TargetListStates targetListContext;
   TargetInfoSign(this.targetContext, this.targetListContext);
 
+  @override
+  _TargetInfoSignState createState() => new _TargetInfoSignState();
+}
+
+class _TargetInfoSignState extends State<TargetInfoSign>
+    with SingleTickerProviderStateMixin {
+  Animation<double> animation;
+  AnimationController controller;
+
+  final int dur = 500;
+  final double widthFactorStart = 0.5;
+
+  initState() {
+    super.initState();
+    controller = new AnimationController(
+        duration: Duration(milliseconds: dur), vsync: this);
+    //图片宽高从0变到300
+    animation =
+        new Tween(begin: widthFactorStart, end: 1.0).animate(controller);
+  }
+
   void signIn() {
-    // TODO: 签到动画
-    Future.delayed(Duration(milliseconds: 500)).then((_) {
-      targetListContext.sign(targetContext);
+    //启动动画
+    controller.forward();
+
+    Future.delayed(Duration(milliseconds: dur)).then((_) {
+      widget.targetListContext.sign(widget.targetContext);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return FractionallySizedBox(
-        widthFactor: .7,
-        child: Listener(
-          child: Container(
-            child: Image(image: AssetImage("imgs/rist.png")),
-          ),
-          onPointerDown: (PointerDownEvent event) => signIn(),
-        ));
+    const String imgSrc = "imgs/fist.png";
+    var imgWidget = Image(image: AssetImage(imgSrc));
+
+    return Listener(
+      child: Stack(
+        children: [
+          CommonPosition(FractionallySizedBox(
+              widthFactor: widthFactorStart, child: imgWidget)),
+          CommonPosition(AnimatedFist(animation: animation)),
+        ],
+      ),
+      onPointerDown: (PointerDownEvent event) => signIn(),
+    );
+  }
+
+  dispose() {
+    //路由销毁时需要释放动画资源
+    controller.dispose();
+    super.dispose();
+  }
+}
+
+class AnimatedFist extends AnimatedWidget {
+  AnimatedFist({Key key, Animation<double> animation})
+      : super(key: key, listenable: animation);
+
+  Widget build(BuildContext context) {
+    final Animation<double> animation = listenable;
+    return new FractionallySizedBox(
+        widthFactor: animation.value,
+        child: Opacity(
+            opacity: 0.5, child: Image(image: AssetImage("imgs/fist.png"))));
   }
 }
