@@ -1,10 +1,10 @@
 class Constants {
-  static String colorMain = '060a27';
+  static String colorMain = '221e1f';
   static String colorNormal = 'C5C6B6';
   static String colorWarning = 'FFBC42';
   static String colorGood = '84B1ED';
   static String colorSuccess = '67D5B5';
-  static String colorError = 'ff1b43';
+  static String colorError = '6d2928';
 
   static Map<String, int> days = {
     'Monday': 1,

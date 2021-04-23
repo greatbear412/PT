@@ -47,7 +47,7 @@ class TargetListStates with ChangeNotifier, DiagnosticableTreeMixin {
 
   /// 创建；并添加入 `_taskList` 列表
   void create(String title, int days) {
-    var valid = getValidTarget().length;
+    var valid = getTargetList(status: 'running').length;
     if (valid < 3) {
       var lastId = _taskList[_taskList.length - 1].id;
       _taskList.add(Target(lastId + 1, title, days));
@@ -69,11 +69,13 @@ class TargetListStates with ChangeNotifier, DiagnosticableTreeMixin {
     notifyListeners();
   }
 
-  /// 获取有效任务
-  List<Target> getValidTarget() {
-    return taskList
-        .where((element) => element.status == statusList['running'])
-        .toList();
+  /// 获取任务
+  List<Target> getTargetList({status}) {
+    return status == null
+        ? taskList
+        : taskList
+            .where((element) => element.status == statusList[status])
+            .toList();
   }
 
   /// 每次启动时自检，并且启动定时器：第二天3点时再次自检(重置所有finish)

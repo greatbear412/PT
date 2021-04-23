@@ -20,62 +20,64 @@ class TargetList extends StatefulWidget {
 }
 
 class _TargetListState extends State<TargetList> {
+  Widget tlContainer;
   @override
   Widget build(BuildContext context) {
     final targetListContext = context.watch<TargetListStates>();
-    final List<Target> targetList = targetListContext.getValidTarget();
+    final List<Target> targetList =
+        targetListContext.getTargetList(status: 'running');
 
-    if (targetList.length == 0) {
-      // TODO: 跳转初始页
-      return Container();
+    // 还有进行中的
+    if (targetList.any((Target target) => target.finishToday == false)) {
+      tlContainer = Container(
+        width: double.infinity,
+        alignment: Alignment.centerLeft,
+        child: Flex(
+            clipBehavior: Clip.hardEdge,
+            direction: Axis.vertical,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: targetList
+                .map((target) => Flexible(
+                      fit: FlexFit.loose,
+                      child: Padding(
+                        padding: EdgeInsets.fromLTRB(30, 50, 30, 50),
+                        child: TargetInfoBox(target, targetListContext),
+                      ),
+                    ))
+                .toList()),
+      );
     } else {
-      // 还有进行中的
-      if (targetList.any((Target target) => target.finishToday == false)) {
-        return Container(
+      // 全部完成
+      tlContainer = Container(
           decoration: BoxDecoration(
               image: DecorationImage(
                   image: NetworkImage(Constants.bgUrl), fit: BoxFit.cover)),
           width: double.infinity,
-          alignment: Alignment.centerLeft,
-          child: Flex(
-              clipBehavior: Clip.hardEdge,
-              direction: Axis.vertical,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: targetList
-                  .map((target) => Flexible(
-                        fit: FlexFit.loose,
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(30, 50, 30, 50),
-                          child: TargetInfoBox(target, targetListContext),
-                        ),
-                      ))
-                  .toList()),
-        );
-      } else {
-        // 全部完成
-        return Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: NetworkImage(Constants.bgUrl), fit: BoxFit.cover)),
-            width: double.infinity,
+          alignment: Alignment.bottomCenter,
+          padding: EdgeInsets.only(bottom: 20),
+          child: Align(
             alignment: Alignment.bottomCenter,
-            padding: EdgeInsets.only(bottom: 20),
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                  decoration: BoxDecoration(
-                      color: Utils.transStr('166675', alpha: 200)),
-                  padding: EdgeInsets.all(10),
-                  child: StyleText(
-                      'Nice！已经全部完成。',
-                      TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                      ))),
-            ));
-      }
+            child: Container(
+                decoration:
+                    BoxDecoration(color: Utils.transStr('166675', alpha: 200)),
+                padding: EdgeInsets.all(10),
+                child: StyleText(
+                    'Nice！已经全部完成。',
+                    TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
+                    ))),
+          ));
     }
+    return Stack(children: [
+      CommonPosition(FadeInImage(
+        placeholder: AssetImage('imgs/panda.jpg'),
+        image: NetworkImage(Constants.bgUrl),
+        fit: BoxFit.cover,
+      )),
+      CommonPosition(tlContainer)
+    ]);
   }
 }
 
@@ -103,7 +105,7 @@ class TargetInfoBox extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                child: Expanded(child: MainText(content)),
+                child: MainText(content),
               ),
             )
           ],
@@ -128,7 +130,7 @@ class TargetInfoBox extends StatelessWidget {
               Expanded(
                   flex: 1,
                   child: Container(
-                    decoration: BoxDecoration(color: Utils.transStr('0b1632')),
+                    decoration: BoxDecoration(color: Utils.transStr('221e1f')),
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
                       child: Flex(direction: Axis.horizontal, children: [

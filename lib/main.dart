@@ -6,6 +6,9 @@ import 'dart:io';
 import 'states/target.dart';
 
 import 'pages/list.dart';
+import 'pages/start.dart';
+import 'pages/edit.dart';
+import 'pages/welcome.dart';
 
 void main() {
   runApp(
@@ -32,13 +35,33 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final targetListContext = context.read<TargetListStates>();
+    final List<Target> validTargetList =
+        targetListContext.getTargetList(status: 'running');
     return MaterialApp(
-      theme: ThemeData(backgroundColor: Colors.white),
-      home: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: TargetList(),
-      ),
-    );
+        theme: ThemeData(backgroundColor: Colors.white),
+        initialRoute: "/",
+        onGenerateRoute: (RouteSettings settings) {
+          String routeName = settings.name;
+          var child;
+          switch (routeName) {
+            case 'edit_target':
+              child = EditTarget();
+              break;
+            case 'target_list_or_start':
+              if (validTargetList.length == 0) {
+                child = TargetList();
+              } else {
+                child = Start();
+              }
+              break;
+            default:
+              child = Welcome();
+          }
+          return MaterialPageRoute(builder: (context) {
+            return Scaffold(body: child);
+          });
+        });
   }
 }
 

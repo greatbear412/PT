@@ -38,3 +38,33 @@ class MainText extends StatelessWidget {
         lines: lines);
   }
 }
+
+///文本搜索框
+class TextFieldWidget extends StatelessWidget {
+  final String labelText;
+  final String hintText;
+  final TextEditingController controller;
+  TextFieldWidget({Key key, this.labelText, this.hintText, this.controller})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 300,
+      child: TextField(
+          controller: controller,
+          decoration: InputDecoration(
+              labelText: labelText,
+              labelStyle: TextStyle(color: Colors.white),
+              hintText: hintText,
+              hintStyle: TextStyle(color: Colors.white),
+              // prefixIcon: Icon(Icons.email),
+              border: InputBorder.none //隐藏下划线
+              )),
+      decoration: BoxDecoration(
+          // 下滑线浅灰色，宽度1像素
+          border:
+              Border(bottom: BorderSide(color: Colors.grey[200], width: 1.0))),
+    );
+  }
+}
