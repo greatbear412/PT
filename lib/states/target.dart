@@ -11,9 +11,8 @@ const Map<String, int> statusList = {
 
 class TargetListStates with ChangeNotifier, DiagnosticableTreeMixin {
   List<Target> _taskList = [
-    Target(0, '早起', 3),
-    Target(1, '锻炼', 30),
-    Target(2, '背单词qwewqwqweqqweeqwqweew', 28),
+    // Target(0, '早起', 3),
+    // Target(2, '背单词qwewqwqweqqweeqwqweew', 28),
   ];
   // {
   //   'id': 0,
@@ -49,7 +48,8 @@ class TargetListStates with ChangeNotifier, DiagnosticableTreeMixin {
   void create(String title, int days) {
     var valid = getTargetList(status: 'running').length;
     if (valid < 3) {
-      var lastId = _taskList[_taskList.length - 1].id;
+      var lastId =
+          _taskList.length == 0 ? 0 : _taskList[_taskList.length - 1].id;
       _taskList.add(Target(lastId + 1, title, days));
       notifyListeners();
     } else {

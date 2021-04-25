@@ -52,7 +52,8 @@ flutter:
   assets:
     - imgs/fist.png
     - imgs/panda.jpg
-    - imgs/edit.jpg
+    - imgs/edit.png
+    - imgs/glove.webp
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -43,8 +44,18 @@ class MainText extends StatelessWidget {
 class TextFieldWidget extends StatelessWidget {
   final String labelText;
   final String hintText;
+  final TextInputType keyboardType;
   final TextEditingController controller;
-  TextFieldWidget({Key key, this.labelText, this.hintText, this.controller})
+  final TextStyle style;
+  final void Function(String) onChange;
+  TextFieldWidget(
+      {Key key,
+      this.labelText,
+      this.hintText,
+      this.controller,
+      this.style,
+      this.onChange,
+      this.keyboardType = TextInputType.text})
       : super(key: key);
 
   @override
@@ -52,15 +63,19 @@ class TextFieldWidget extends StatelessWidget {
     return Container(
       width: 300,
       child: TextField(
-          controller: controller,
-          decoration: InputDecoration(
-              labelText: labelText,
-              labelStyle: TextStyle(color: Colors.white),
-              hintText: hintText,
-              hintStyle: TextStyle(color: Colors.white),
-              // prefixIcon: Icon(Icons.email),
-              border: InputBorder.none //隐藏下划线
-              )),
+        controller: controller,
+        keyboardType: keyboardType,
+        style: style,
+        decoration: InputDecoration(
+            labelText: labelText,
+            labelStyle: TextStyle(color: Colors.white),
+            hintText: hintText,
+            hintStyle: TextStyle(color: Colors.white),
+            // prefixIcon: Icon(Icons.email),
+            border: InputBorder.none //隐藏下划线
+            ),
+        onChanged: onChange,
+      ),
       decoration: BoxDecoration(
           // 下滑线浅灰色，宽度1像素
           border:

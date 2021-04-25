@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import './list.dart';
 import './edit.dart';
 import '../common/constant.dart';
 import '../states/target.dart';
@@ -13,13 +14,17 @@ class Start extends StatefulWidget {
 }
 
 class _StartState extends State<Start> {
-  void createTarget() {
-    Navigator.pushNamed(context, 'edit_target');
+  void goToCreateTarget(TargetListStates states) {
+    List<Target> validLength = states.getTargetList(status: 'running');
+    String route =
+        validLength.length == 0 ? 'edit_target' : 'target_list_or_start';
+    Navigator.pushNamed(context, route);
   }
 
   @override
   Widget build(BuildContext context) {
-    final targetListContext = context.watch<TargetListStates>();
+    final TargetListStates targetListContext =
+        context.watch<TargetListStates>();
     final List<Target> targetList = targetListContext.getTargetList();
     final String content = targetList.length > 0 ? '继续挑战 ？' : '开始吧。';
 
@@ -35,7 +40,8 @@ class _StartState extends State<Start> {
                 left: 0,
                 right: 0,
                 child: Listener(
-                    onPointerDown: (PointerDownEvent event) => createTarget(),
+                    onPointerDown: (PointerDownEvent event) =>
+                        goToCreateTarget(targetListContext),
                     child: Center(
                       child: Container(
                         width: 300,

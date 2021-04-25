@@ -35,29 +35,27 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final targetListContext = context.read<TargetListStates>();
-    final List<Target> validTargetList =
-        targetListContext.getTargetList(status: 'running');
+    final targetListContext = context.watch<TargetListStates>();
     return MaterialApp(
         theme: ThemeData(backgroundColor: Colors.white),
         initialRoute: "/",
         onGenerateRoute: (RouteSettings settings) {
           String routeName = settings.name;
+          final List<Target> validTargetList =
+              targetListContext.getTargetList(status: 'running');
+          var targetChild = validTargetList.length > 0 ? TargetList() : Start();
           var child;
           switch (routeName) {
             case 'edit_target':
               child = EditTarget();
               break;
             case 'target_list_or_start':
-              if (validTargetList.length == 0) {
-                child = TargetList();
-              } else {
-                child = Start();
-              }
+              child = targetChild;
               break;
             default:
-              child = Welcome();
+              child = Start();
           }
+          print(validTargetList.length);
           return MaterialPageRoute(builder: (context) {
             return Scaffold(body: child);
           });
