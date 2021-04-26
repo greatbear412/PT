@@ -31,6 +31,7 @@ dependencies:
   shared_preferences: ^0.5.7+3
   provider:
   date_format:
+  table_calendar:
   # cached_network_image: ^3.0.0
 
 dev_dependencies:

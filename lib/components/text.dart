@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class StyleText extends StatelessWidget {
   final String text;
@@ -48,6 +49,8 @@ class TextFieldWidget extends StatelessWidget {
   final TextEditingController controller;
   final TextStyle style;
   final void Function(String) onChange;
+  final List<TextInputFormatter> formatter;
+
   TextFieldWidget(
       {Key key,
       this.labelText,
@@ -55,6 +58,7 @@ class TextFieldWidget extends StatelessWidget {
       this.controller,
       this.style,
       this.onChange,
+      this.formatter,
       this.keyboardType = TextInputType.text})
       : super(key: key);
 
@@ -75,6 +79,7 @@ class TextFieldWidget extends StatelessWidget {
             border: InputBorder.none //隐藏下划线
             ),
         onChanged: onChange,
+        inputFormatters: formatter,
       ),
       decoration: BoxDecoration(
           // 下滑线浅灰色，宽度1像素

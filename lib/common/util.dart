@@ -50,4 +50,12 @@ class Utils {
   static int getRandomInit(int src) {
     return rng.nextInt(src);
   }
+
+  static double getScreenWidth(context) {
+    return MediaQuery.of(context).size.width;
+  }
+
+  static double getScreenHeight(context) {
+    return MediaQuery.of(context).size.height;
+  }
 }

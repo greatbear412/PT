@@ -229,13 +229,14 @@ class _TargetInfoSignState extends State<TargetInfoSign>
         new Tween(begin: widthFactorStart, end: 1.0).animate(controller);
   }
 
-  void signIn() {
+  bool signIn() {
     //启动动画
     controller.forward();
 
     Future.delayed(Duration(milliseconds: dur)).then((_) {
       widget.targetListContext.sign(widget.targetContext);
     });
+    return false;
   }
 
   @override

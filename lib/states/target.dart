@@ -95,6 +95,7 @@ class Target {
   int days;
   int finish;
   bool finishToday;
+  List<DateTime> finishHistory;
   DateTime startTime;
 
   int status;
@@ -102,11 +103,19 @@ class Target {
 
   Target(this.id, this.title, this.days,
       {this.finish = 0, this.status = 1, this.finishToday = false})
-      : startTime = DateTime.now();
+      : startTime = DateTime.now(),
+        finishHistory = [
+          DateTime.now().subtract(const Duration(days: 1)),
+          DateTime.now().subtract(const Duration(days: 4)),
+          DateTime.now().subtract(const Duration(days: 5)),
+          DateTime.now().subtract(const Duration(days: 7)),
+          DateTime.now().subtract(const Duration(days: 10))
+        ];
 
   void sign() {
     this.finish += 1;
     this.finishToday = true;
+    this.finishHistory.add(DateTime.now());
     this.lastFinish = DateTime.now();
 
     this.checkValid();

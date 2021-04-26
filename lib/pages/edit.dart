@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../common/constant.dart';
@@ -53,10 +54,9 @@ class _EditTargetState extends State<EditTarget> {
                 right: 0,
                 child: Center(
                     child: Image(
-                  image: AssetImage('imgs/edit.png'),
-                  repeat: ImageRepeat.noRepeat,
-                  width: MediaQuery.of(context).size.width * 1,
-                ))),
+                        image: AssetImage('imgs/edit.png'),
+                        repeat: ImageRepeat.noRepeat,
+                        width: Utils.getScreenWidth(context)))),
             Container(
               child: BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
@@ -74,12 +74,14 @@ class _EditTargetState extends State<EditTarget> {
                           style: TextStyle(color: Colors.white),
                           onChange: onTaskChange),
                       TextFieldWidget(
-                        controller: _udaysController,
-                        keyboardType: TextInputType.number,
-                        labelText: "期限(最大365)",
-                        style: TextStyle(color: Colors.white),
-                        onChange: onDaysChange,
-                      ),
+                          controller: _udaysController,
+                          keyboardType: TextInputType.number,
+                          labelText: "期限(最大365)",
+                          style: TextStyle(color: Colors.white),
+                          onChange: onDaysChange,
+                          formatter: [
+                            WhitelistingTextInputFormatter(RegExp("[0-9]"))
+                          ]),
                       Listener(
                           onPointerDown: (PointerDownEvent event) =>
                               createTarget(targetListContext),

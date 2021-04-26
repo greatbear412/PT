@@ -8,7 +8,7 @@ import 'states/target.dart';
 import 'pages/list.dart';
 import 'pages/start.dart';
 import 'pages/edit.dart';
-import 'pages/welcome.dart';
+import 'pages/detail.dart';
 
 void main() {
   runApp(
@@ -49,13 +49,15 @@ class MyApp extends StatelessWidget {
             case 'edit_target':
               child = EditTarget();
               break;
+            case 'detail_target':
+              child = Detail(settings.arguments);
+              break;
             case 'target_list_or_start':
               child = targetChild;
               break;
             default:
               child = Start();
           }
-          print(validTargetList.length);
           return MaterialPageRoute(builder: (context) {
             return Scaffold(body: child);
           });
