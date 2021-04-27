@@ -30,3 +30,51 @@ class GrowTransition extends StatelessWidget {
         child: child);
   }
 }
+
+class WidgetTransition extends StatefulWidget {
+  WidgetTransition({this.initialChild, this.duration});
+
+  final Widget initialChild;
+  final int duration;
+
+// TODO: class method
+  void transferTo(Widget newChild) {
+    _WidgetTransitionState.transferTo(newChild);
+  }
+
+  @override
+  _WidgetTransitionState createState() => _WidgetTransitionState();
+}
+
+class _WidgetTransitionState extends State<WidgetTransition> {
+  Widget _child;
+  Widget _oldChild;
+
+  void transferTo(Widget newChild) {
+    setState(() {
+      _child = AnimatedOpacity(
+          opacity: 0,
+          duration: Duration(milliseconds: widget.duration),
+          child: _oldChild);
+      Future.delayed(Duration(milliseconds: widget.duration)).then((_) {
+        _child = AnimatedOpacity(
+            opacity: 1,
+            duration: Duration(milliseconds: widget.duration),
+            child: newChild);
+        _oldChild = newChild;
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    _child = widget.initialChild;
+    _oldChild = _child;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _child;
+  }
+}

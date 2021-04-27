@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -18,6 +17,7 @@ class StyleText extends StatelessWidget {
       style: style,
       maxLines: lines,
       softWrap: false,
+      textAlign: TextAlign.center,
       overflow: TextOverflow.ellipsis,
     );
   }

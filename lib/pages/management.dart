@@ -8,15 +8,12 @@ import '../common/util.dart';
 import '../components/text.dart';
 import '../components/common.dart';
 
-class Detail extends StatefulWidget {
-  final Target target;
-  Detail(this.target);
-
+class Management extends StatefulWidget {
   @override
-  _DetailState createState() => new _DetailState();
+  _ManagementState createState() => new _ManagementState();
 }
 
-class _DetailState extends State<Detail> {
+class _ManagementState extends State<Management> {
   @override
   void initState() {
     // TODO: implement initState
@@ -25,20 +22,19 @@ class _DetailState extends State<Detail> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.target);
-
     return Container(
-      width: Utils.getScreenWidth(context),
-      height: Utils.getScreenHeight(context),
-      child: Column(
-        children: [
-          TableCalendar(
-            firstDay: DateTime.utc(2010, 10, 16),
-            lastDay: DateTime.now(),
-            focusedDay: DateTime.now(),
-          )
-        ],
-      ),
+      child: Text('123'),
+      // width: Utils.getScreenWidth(context),
+      // height: Utils.getScreenHeight(context),
+      // child: Column(
+      //   children: [
+      //     TableCalendar(
+      //       firstDay: DateTime.utc(2010, 10, 16),
+      //       lastDay: DateTime.now(),
+      //       focusedDay: DateTime.now(),
+      //     )
+      //   ],
+      // ),
     );
   }
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/cupertino.dart';
 
-import './list.dart';
-import './edit.dart';
+import '../menu.dart';
 import '../common/constant.dart';
 import '../states/target.dart';
 import '../common/util.dart';
@@ -14,11 +15,11 @@ class Start extends StatefulWidget {
 }
 
 class _StartState extends State<Start> {
+  bool isNew;
+
   void goToCreateTarget(TargetListStates states) {
-    List<Target> validLength = states.getTargetList(status: 'running');
-    String route =
-        validLength.length == 0 ? 'edit_target' : 'target_list_or_start';
-    Navigator.pushNamed(context, route);
+    int initialIndex = isNew ? 1 : 0;
+    pushNewScreen(context, screen: MainMenu(initialIndex: initialIndex));
   }
 
   @override
@@ -26,35 +27,48 @@ class _StartState extends State<Start> {
     final TargetListStates targetListContext =
         context.watch<TargetListStates>();
     final List<Target> targetList = targetListContext.getTargetList();
-    final String content = targetList.length > 0 ? '继续挑战 ？' : '开始吧。';
+    isNew = targetList.length == 0;
+    final String content = isNew ? '开始吧 :)' : '继续挑战 ？';
 
-    return Container(
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage('imgs/panda.jpg'), fit: BoxFit.cover)),
-        width: double.infinity,
-        child: Stack(
-          children: [
-            Positioned(
-                bottom: 50,
-                left: 0,
-                right: 0,
-                child: Listener(
-                    onPointerDown: (PointerDownEvent event) =>
-                        goToCreateTarget(targetListContext),
-                    child: Center(
-                      child: Container(
-                        width: 300,
-                        height: 80,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                            color: Utils.transStr(Constants.colorError)),
-                        child: MainText(content),
-                      ),
-                    )))
-          ],
-        ));
+    return Scaffold(
+        body: Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('imgs/panda.jpg'), fit: BoxFit.cover)),
+            child: Stack(
+              children: [
+                Positioned(
+                    bottom: 50,
+                    left: 0,
+                    right: 0,
+                    child: Listener(
+                        onPointerDown: (PointerDownEvent event) =>
+                            goToCreateTarget(targetListContext),
+                        child: Center(
+                          child: Container(
+                            width: 300,
+                            height: 80,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8)),
+                                color: Utils.transStr(Constants.colorActive)),
+                            child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(CupertinoIcons.star_circle,
+                                      size: 40, color: Colors.white),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  MainText(content)
+                                ]),
+                          ),
+                        )))
+              ],
+            )));
     // }
   }
 }

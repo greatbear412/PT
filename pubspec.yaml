@@ -32,6 +32,8 @@ dependencies:
   provider:
   date_format:
   table_calendar:
+  persistent_bottom_nav_bar: ^4.0.2
+
   # cached_network_image: ^3.0.0
 
 dev_dependencies:
@@ -55,6 +57,8 @@ flutter:
     - imgs/panda.jpg
     - imgs/edit.png
     - imgs/glove.webp
+    - imgs/glove_error.webp
+    - imgs/panda_gun.webp
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

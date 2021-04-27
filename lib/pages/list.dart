@@ -1,11 +1,8 @@
-///首页列表页面
-///
-///本页：获取列表状态并渲染；打卡；
-///副作用：打卡
-///
-///关联路由页：详情
-///
-
+/// 四种状态：
+/// 1. 没有任务；
+/// 2.有任务：正在进行中
+/// 3.有任务：全部完成
+/// 4.有任务：没有有效的
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../common/constant.dart';
@@ -24,11 +21,12 @@ class _TargetListState extends State<TargetList> {
   @override
   Widget build(BuildContext context) {
     final targetListContext = context.watch<TargetListStates>();
-    final List<Target> targetList =
+    final List<Target> targetListRunning =
         targetListContext.getTargetList(status: 'running');
+    final List<Target> targetListAll = targetListContext.getTargetList();
 
     // 还有进行中的
-    if (targetList.any((Target target) => target.finishToday == false)) {
+    if (targetListRunning.any((Target target) => target.finishToday == false)) {
       tlContainer = Container(
         width: double.infinity,
         alignment: Alignment.centerLeft,
@@ -37,7 +35,7 @@ class _TargetListState extends State<TargetList> {
             direction: Axis.vertical,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: targetList
+            children: targetListRunning
                 .map((target) => Flexible(
                       fit: FlexFit.loose,
                       child: Padding(
@@ -48,36 +46,42 @@ class _TargetListState extends State<TargetList> {
                 .toList()),
       );
     } else {
+      String content = '';
+      if (targetListAll.length == 0) {
+        content = '先去创建个任务吧.';
+      } else if (targetListRunning.length > 0) {
+        content = '很好！全部完成了.';
+      } else {
+        content = '没有有效的任务了.';
+      }
       // 全部完成
       tlContainer = Container(
-          decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: NetworkImage(Constants.bgUrl), fit: BoxFit.cover)),
           width: double.infinity,
-          alignment: Alignment.bottomCenter,
-          padding: EdgeInsets.only(bottom: 20),
+          padding: EdgeInsets.only(top: 20),
           child: Align(
-            alignment: Alignment.bottomCenter,
+            alignment: Alignment.topCenter,
             child: Container(
                 decoration:
-                    BoxDecoration(color: Utils.transStr('166675', alpha: 200)),
+                    BoxDecoration(color: Utils.transStr('ef4f4f', alpha: 200)),
                 padding: EdgeInsets.all(10),
                 child: StyleText(
-                    'Nice！已经全部完成。',
+                    content,
                     TextStyle(
                       color: Colors.white,
                       fontSize: 20,
                     ))),
           ));
     }
-    return Stack(children: [
-      CommonPosition(FadeInImage(
-        placeholder: AssetImage('imgs/panda.jpg'),
-        image: NetworkImage(Constants.bgUrl),
-        fit: BoxFit.cover,
-      )),
-      CommonPosition(tlContainer)
-    ]);
+    return Container(
+        padding: const EdgeInsets.only(bottom: 36),
+        child: Stack(children: [
+          CommonPosition(FadeInImage(
+            placeholder: AssetImage('imgs/panda.jpg'),
+            image: NetworkImage(Constants.bgUrl),
+            fit: BoxFit.cover,
+          )),
+          CommonPosition(tlContainer)
+        ]));
   }
 }
 
@@ -174,6 +178,7 @@ class TargetInfoText extends StatelessWidget {
     return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.min,
         children: [
           MainText(targetContext.title),
           TargetInfoSubText(targetContext)
