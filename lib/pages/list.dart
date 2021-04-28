@@ -181,6 +181,9 @@ class TargetInfoText extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           MainText(targetContext.title),
+          SizedBox(
+            height: 10,
+          ),
           TargetInfoSubText(targetContext)
         ]);
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './bus.dart';
 
 class AnimatedImage extends AnimatedWidget {
   final String imgSrc = '';
@@ -37,11 +38,6 @@ class WidgetTransition extends StatefulWidget {
   final Widget initialChild;
   final int duration;
 
-// TODO: class method
-  void transferTo(Widget newChild) {
-    _WidgetTransitionState.transferTo(newChild);
-  }
-
   @override
   _WidgetTransitionState createState() => _WidgetTransitionState();
 }
@@ -49,27 +45,41 @@ class WidgetTransition extends StatefulWidget {
 class _WidgetTransitionState extends State<WidgetTransition> {
   Widget _child;
   Widget _oldChild;
+  String _key;
 
-  void transferTo(Widget newChild) {
-    setState(() {
-      _child = AnimatedOpacity(
-          opacity: 0,
-          duration: Duration(milliseconds: widget.duration),
-          child: _oldChild);
-      Future.delayed(Duration(milliseconds: widget.duration)).then((_) {
+  void transfer(key, newChild) {
+    if (_key != key) {
+      return;
+    }
+    if (_oldChild != newChild) {
+      setState(() {
         _child = AnimatedOpacity(
-            opacity: 1,
+            opacity: 0,
             duration: Duration(milliseconds: widget.duration),
-            child: newChild);
-        _oldChild = newChild;
+            child: _oldChild);
+        Future.delayed(Duration(milliseconds: widget.duration)).then((_) {
+          setState(() {
+            _child = AnimatedOpacity(
+                opacity: 1,
+                duration: Duration(milliseconds: widget.duration),
+                child: newChild);
+            _oldChild = newChild;
+          });
+        });
       });
-    });
+    }
   }
 
   @override
   void initState() {
     _child = widget.initialChild;
     _oldChild = _child;
+    bus.on("transferGlove", (arg) {
+      if (_key == null) {
+        _key = arg['key'];
+      }
+      transfer(arg['key'], arg['body']);
+    });
     super.initState();
   }
 

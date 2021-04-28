@@ -24,6 +24,7 @@ class _StartState extends State<Start> {
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(NetworkImage(Constants.bgUrl), context);
     final TargetListStates targetListContext =
         context.watch<TargetListStates>();
     final List<Target> targetList = targetListContext.getTargetList();

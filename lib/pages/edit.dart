@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../states/target.dart';
 import '../common/util.dart';
+import '../common/bus.dart';
 import '../common/animation.dart';
 import '../components/text.dart';
 
@@ -19,6 +20,16 @@ class _EditTargetState extends State<EditTarget> {
   TextEditingController _udaysController = TextEditingController();
   Widget child;
 
+  Widget errorGloveWidget = Image(
+    image: AssetImage('imgs/glove_error.webp'),
+    repeat: ImageRepeat.noRepeat,
+    width: 100,
+  );
+  Widget goodGloveWidget = Image(
+    image: AssetImage('imgs/glove.webp'),
+    repeat: ImageRepeat.noRepeat,
+    width: 100,
+  );
   Widget gloveWidget;
   bool status = false;
 
@@ -52,31 +63,24 @@ class _EditTargetState extends State<EditTarget> {
   }
 
   void setGlove() {
-    setState(() {
-      /// TODO: `rebuild`时有渐变效果
-      gloveWidget = status == true
-          ? FadeInImage(
-              placeholder: AssetImage('imgs/glove_error.webp'),
-              image: AssetImage('imgs/glove.webp'),
-              fit: BoxFit.cover,
-              width: 100)
-          : Image(
-              image: AssetImage('imgs/glove_error.webp'),
-              repeat: ImageRepeat.noRepeat,
-              width: 100,
-            );
-      // WidgetTransition.trans
-    });
+    if (status == true) {
+      gloveWidget = goodGloveWidget;
+    } else {
+      gloveWidget = errorGloveWidget;
+    }
+    bus.emit("transferGlove", {'key': 'edit', 'body': gloveWidget});
   }
 
   @override
   void initState() {
     checkValid();
+    gloveWidget = errorGloveWidget;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    precacheImage(AssetImage('imgs/glove.webp'), context);
     final targetListContext = context.watch<TargetListStates>();
     final List<Target> targetListRunning =
         targetListContext.getTargetList(status: 'running');
@@ -102,11 +106,7 @@ class _EditTargetState extends State<EditTarget> {
               child: Container(
                   margin: const EdgeInsets.only(top: 10),
                   child: WidgetTransition(
-                    initialChild: Image(
-                      image: AssetImage('imgs/glove_error.webp'),
-                      repeat: ImageRepeat.noRepeat,
-                      width: 100,
-                    ),
+                    initialChild: gloveWidget,
                     duration: 500,
                   )))
         ],

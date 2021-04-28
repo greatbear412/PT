@@ -48,7 +48,7 @@ class _MainMenuState extends State<MainMenu> {
       PersistentBottomNavBarItem(
         icon: Icon(CupertinoIcons.add),
         activeColorPrimary: Utils.transStr(Constants.colorActive),
-        activeColorSecondary: Utils.transStr(Constants.colorMain),
+        activeColorSecondary: Utils.transStr('f9f871'),
         inactiveColorPrimary: Colors.white,
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: '/add',
