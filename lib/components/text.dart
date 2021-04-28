@@ -8,7 +8,9 @@ class StyleText extends StatelessWidget {
   final String text;
   final TextStyle style;
   final int lines;
-  StyleText(this.text, this.style, {this.lines = 1});
+  final TextAlign align;
+  StyleText(this.text, this.style,
+      {this.lines = 1, this.align = TextAlign.start});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +19,7 @@ class StyleText extends StatelessWidget {
       style: style,
       maxLines: lines,
       softWrap: false,
-      textAlign: TextAlign.center,
+      textAlign: align,
       overflow: TextOverflow.ellipsis,
     );
   }

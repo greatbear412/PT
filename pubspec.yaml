@@ -1,5 +1,5 @@
-name: flutter_application_1
-description: A new Flutter project.
+name: powerful_target
+description: An app helps you to achieve something.
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `pub publish`. This is preferred for private packages.
@@ -29,11 +29,11 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   shared_preferences: ^0.5.7+3
-  provider:
-  date_format:
-  table_calendar:
+  provider: ^5.0.0 
+  date_format: ^2.0.2
+  table_calendar: ^3.0.0
   persistent_bottom_nav_bar: ^4.0.2
-
+  oktoast: ^3.0.0
   # cached_network_image: ^3.0.0
 
 dev_dependencies:
@@ -59,6 +59,8 @@ flutter:
     - imgs/glove.webp
     - imgs/glove_error.webp
     - imgs/panda_gun.webp
+    - imgs/management.webp
+    - imgs/detail.webp
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -47,22 +47,26 @@ class _TargetListState extends State<TargetList> {
       );
     } else {
       String content = '';
+      String statusColor;
       if (targetListAll.length == 0) {
         content = '先去创建个任务吧.';
+        statusColor = Constants.colorWarning;
       } else if (targetListRunning.length > 0) {
         content = '很好！全部完成了.';
+        statusColor = Constants.colorSuccess;
       } else {
         content = '没有有效的任务了.';
+        statusColor = Constants.colorError;
       }
-      // 全部完成
+      // 没有进行中的
       tlContainer = Container(
           width: double.infinity,
           padding: EdgeInsets.only(top: 20),
           child: Align(
             alignment: Alignment.topCenter,
             child: Container(
-                decoration:
-                    BoxDecoration(color: Utils.transStr('ef4f4f', alpha: 200)),
+                decoration: BoxDecoration(
+                    color: Utils.transStr(statusColor, alpha: 200)),
                 padding: EdgeInsets.all(10),
                 child: StyleText(
                     content,

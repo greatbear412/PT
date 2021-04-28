@@ -47,6 +47,10 @@ class Utils {
     return Constants.days[day];
   }
 
+  static String getFormatDate(DateTime date) {
+    return formatDate(date, [yyyy, '-', mm, '-', dd]);
+  }
+
   static int getRandomInit(int src) {
     return rng.nextInt(src);
   }

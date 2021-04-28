@@ -6,38 +6,26 @@ const Map<String, int> statusList = {
   'running': 1,
   'fail': 2,
   'invalid': 3,
-  'end': 99,
+  'finish': 99,
 };
 
 class TargetListStates with ChangeNotifier, DiagnosticableTreeMixin {
   List<Target> _taskList = [
-    // Target(0, '早起', 3),
-    // Target(2, '背单词qwewqwqweqqweeqwqweew', 28),
+    // Target(1, '早起', 8, status: 1),
+    // Target(2, '背单词qweeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', 28, status: 1),
+    // Target(3, '背单词', 14, status: 2),
+    // Target(4, '背单词', 24, status: 2),
+    // Target(5, '背单词', 13, status: 2),
+    // Target(6, '背单词', 28, status: 2),
+    // Target(7, '背单词', 14, status: 3),
+    // Target(8, '背单词', 23, status: 3),
+    // Target(9, '背单词', 23, status: 3),
+    // Target(10, '背单词', 23, status: 3),
+    // Target(11, '背单词', 24, status: 99),
+    // Target(12, '背单词', 12, status: 99),
+    // Target(13, '背单词', 176, status: 99),
+    // Target(14, '背单词', 15, status: 99),
   ];
-  // {
-  //   'id': 0,
-  //   'title': '早起',
-  //   'days': 30,
-  //   'finish': 5,
-  //   'status': 1,
-  //   'lastFinish': '2020-04-18 15:59:21',
-  // },
-  // {
-  //   'id': '1',
-  //   'title': '早起',
-  //   'days': '30',
-  //   'finish': '15',
-  //   'status': '1',
-  //   'lastFinish': '2020-04-18 15:59:21',
-  // },
-  // {
-  //   'id': '2',
-  //   'title': '早起',
-  //   'days': '30',
-  //   'finish': '25',
-  //   'status': '1',
-  //   'lastFinish': '2020-04-18 15:59:21',
-  // }
 
   List<Target> get taskList => _taskList;
 
@@ -105,11 +93,11 @@ class Target {
       {this.finish = 0, this.status = 1, this.finishToday = false})
       : startTime = DateTime.now(),
         finishHistory = [
-          DateTime.now().subtract(const Duration(days: 1)),
-          DateTime.now().subtract(const Duration(days: 4)),
-          DateTime.now().subtract(const Duration(days: 5)),
-          DateTime.now().subtract(const Duration(days: 7)),
-          DateTime.now().subtract(const Duration(days: 10))
+          // DateTime.now().subtract(const Duration(days: 1)),
+          // DateTime.now().subtract(const Duration(days: 4)),
+          // DateTime.now().subtract(const Duration(days: 5)),
+          // DateTime.now().subtract(const Duration(days: 7)),
+          // DateTime.now().subtract(const Duration(days: 10))
         ];
 
   void sign() {
@@ -132,7 +120,7 @@ class Target {
   //任务是否有效；是否已经达成
   bool checkValid() {
     if (this.finish >= this.days) {
-      this.status = statusList['end'];
+      this.status = statusList['finish'];
     }
     return this.status == statusList['running'];
   }

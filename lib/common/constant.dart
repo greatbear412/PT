@@ -3,9 +3,10 @@ class Constants {
   static String colorActive = 'f7c92f';
   static String colorNormal = 'C5C6B6';
   static String colorWarning = 'FFBC42';
-  static String colorGood = '84B1ED';
-  static String colorSuccess = '67D5B5';
-  static String colorError = '6d2928';
+  static String colorGood = '30A9DE';
+  static String colorSuccess = '8CD790';
+  static String colorError = 'ff6b6b';
+  static String colorDelete = '7f6afd';
 
   static Map<String, int> days = {
     'Monday': 1,

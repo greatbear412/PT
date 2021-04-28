@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
+import 'package:oktoast/oktoast.dart';
 
 import 'states/target.dart';
 
@@ -37,9 +38,10 @@ class MyApp extends StatelessWidget {
           // 触摸收起键盘
           FocusScope.of(context).requestFocus(FocusNode());
         },
-        child: MaterialApp(
+        child: OKToast(
+            child: MaterialApp(
           theme: ThemeData(backgroundColor: Colors.white),
           home: Start(),
-        ));
+        )));
   }
 }

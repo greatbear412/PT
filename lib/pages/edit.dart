@@ -1,8 +1,8 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:oktoast/oktoast.dart';
 
 import '../states/target.dart';
 import '../common/util.dart';
@@ -39,10 +39,14 @@ class _EditTargetState extends State<EditTarget> {
           _utaskController.text, int.parse(_udaysController.text.toString()));
       _utaskController.clear();
       _udaysController.clear();
-      // TODO: 不能用pushNewScreen了; 如果不能用，就换成提示，让用户自己切换
-      // Navigator.of(context).push(
-      //     MaterialPageRoute(settings: RouteSettings(name: ), builder: (BuildContext context) => TargetList()));
-      // pushNewScreen(context, screen: TargetList());
+      checkValid();
+      showToast("创建成功!",
+          duration: Duration(seconds: 2),
+          position: ToastPosition.top,
+          backgroundColor: Colors.yellow.withOpacity(0.8),
+          radius: 18.0,
+          textStyle: TextStyle(fontSize: 24.0),
+          textPadding: const EdgeInsets.fromLTRB(28, 18, 28, 18));
     }
   }
 

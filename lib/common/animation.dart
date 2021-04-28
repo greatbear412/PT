@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
 import './bus.dart';
 
 class AnimatedImage extends AnimatedWidget {
@@ -47,6 +48,8 @@ class _WidgetTransitionState extends State<WidgetTransition> {
   Widget _oldChild;
   String _key;
 
+  Timer timer;
+
   void transfer(key, newChild) {
     if (_key != key) {
       return;
@@ -57,7 +60,7 @@ class _WidgetTransitionState extends State<WidgetTransition> {
             opacity: 0,
             duration: Duration(milliseconds: widget.duration),
             child: _oldChild);
-        Future.delayed(Duration(milliseconds: widget.duration)).then((_) {
+        timer = Timer(Duration(milliseconds: widget.duration), () {
           setState(() {
             _child = AnimatedOpacity(
                 opacity: 1,
@@ -86,5 +89,11 @@ class _WidgetTransitionState extends State<WidgetTransition> {
   @override
   Widget build(BuildContext context) {
     return _child;
+  }
+
+  @override
+  dispose() {
+    timer.cancel();
+    super.dispose();
   }
 }
