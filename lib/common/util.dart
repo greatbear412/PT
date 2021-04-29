@@ -62,4 +62,8 @@ class Utils {
   static double getScreenHeight(context) {
     return MediaQuery.of(context).size.height;
   }
+
+  static bool isWeekend(DateTime day) {
+    return day.weekday == DateTime.sunday || day.weekday == DateTime.saturday;
+  }
 }

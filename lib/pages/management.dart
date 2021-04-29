@@ -98,8 +98,8 @@ class TargetListView extends StatelessWidget {
               _status_color = Utils.transStr(Constants.colorGood);
           }
           return new Listener(
-              onPointerDown: (PointerDownEvent event) =>
-                  pushNewScreen(context, screen: Detail(target)),
+              onPointerDown: (PointerDownEvent event) => pushNewScreen(context,
+                  screen: Detail(target), withNavBar: false),
               child: Container(
                 width: Utils.getScreenWidth(context) - 50,
                 margin: const EdgeInsets.fromLTRB(20, 0, 20, 30),

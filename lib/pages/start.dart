@@ -35,7 +35,7 @@ class _StartState extends State<Start> {
         body: Container(
             decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('imgs/panda.jpg'), fit: BoxFit.cover)),
+                    image: AssetImage('imgs/panda.webp'), fit: BoxFit.cover)),
             child: Stack(
               children: [
                 Positioned(

@@ -162,7 +162,7 @@ class _EditTargetState extends State<EditTarget> {
                 right: 0,
                 child: Center(
                     child: Image(
-                        image: AssetImage('imgs/edit.png'),
+                        image: AssetImage('imgs/edit.webp'),
                         repeat: ImageRepeat.noRepeat,
                         width: Utils.getScreenWidth(context)))),
             Container(

@@ -80,7 +80,7 @@ class _TargetListState extends State<TargetList> {
         padding: const EdgeInsets.only(bottom: 36),
         child: Stack(children: [
           CommonPosition(FadeInImage(
-            placeholder: AssetImage('imgs/panda.jpg'),
+            placeholder: AssetImage('imgs/panda.webp'),
             image: NetworkImage(Constants.bgUrl),
             fit: BoxFit.cover,
           )),
@@ -253,7 +253,7 @@ class _TargetInfoSignState extends State<TargetInfoSign>
 
   @override
   Widget build(BuildContext context) {
-    const String imgSrc = "imgs/fist.png";
+    const String imgSrc = "imgs/fist.webp";
     var imgWidget = Image(image: AssetImage(imgSrc));
 
     return Listener(
@@ -284,6 +284,6 @@ class AnimatedFist extends AnimatedWidget {
     return new FractionallySizedBox(
         widthFactor: animation.value,
         child: Opacity(
-            opacity: 0.5, child: Image(image: AssetImage("imgs/fist.png"))));
+            opacity: 0.5, child: Image(image: AssetImage("imgs/fist.webp"))));
   }
 }
