@@ -1,14 +1,15 @@
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:provider/provider.dart';
 import 'dart:ui';
 
 import '../common/constant.dart';
 import '../states/target.dart';
 import '../common/util.dart';
 import '../components/text.dart';
-import '../components/common.dart';
+import './edit.dart';
 
 class Detail extends StatefulWidget {
   final Target target;
@@ -49,7 +50,8 @@ class _DetailState extends State<Detail> {
     );
   }
 
-  Widget getBtns(String text, String imgSrc, Color color, Function callback) {
+  Widget getBtns(String text, String imgSrc, Color color, Function callback,
+      {Target target, TargetListStates targetListStates}) {
     Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
         MaterialState.pressed,
@@ -80,26 +82,89 @@ class _DetailState extends State<Detail> {
           style: ButtonStyle(
               backgroundColor: MaterialStateProperty.resolveWith(getColor)),
           onPressed: () {
-            callback();
+            if (targetListStates != null) {
+              callback(target, targetListStates);
+            } else {
+              callback(target);
+            }
           },
         )
       ],
     );
   }
 
-  void goEdit() {
-    print(target);
+  void goEdit(Target target) async {
+    var newTarget = await pushNewScreen(context,
+        screen: EditTarget(target: target), withNavBar: false);
+    setState(() {
+      target = newTarget;
+    });
+  }
+
+  void goReStart(Target target, TargetListStates targetListStates) {
+    final List<Target> targetListRunning =
+        targetListStates.getTargetList(status: 'running');
+    if (targetListRunning.length < 3) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: Text('Readay?'),
+              content: Text('准备好了么？'),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text('开始吧。'),
+                  onPressed: () {
+                    targetListStates.reStart(target);
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            );
+          });
+    } else {
+      Utils.showCommonToast(
+          '目前任务已经够3个了', Utils.transStr(Constants.colorWarning));
+    }
+  }
+
+  void goAbolish(Target target, TargetListStates targetListStates) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Really?'),
+            content: Text('确认放弃吗？'),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('放弃吧。'),
+                onPressed: () {
+                  targetListStates.abolish(target);
+                  Navigator.pop(context);
+                },
+              ),
+            ],
+          );
+        });
   }
 
   @override
   Widget build(BuildContext context) {
     IconData _icon;
     Color _status_color;
-    List<Widget> btnGroups = [
-      getBtns('编辑', 'imgs/edit_target.webp', Utils.transStr('fbd9ce'), goEdit),
-      getBtns('重来', 'imgs/restart.webp', Utils.transStr('50f359'), goEdit),
-      getBtns('放弃', 'imgs/abondon.webp', Utils.transStr('ebf1da'), goEdit)
-    ];
+    final targetListContext = context.watch<TargetListStates>();
+
+    Widget btnEdit = getBtns(
+        '编辑', 'imgs/edit_target.webp', Utils.transStr('fbd9ce'), goEdit,
+        target: target);
+    Widget btnReStart = getBtns(
+        '重来', 'imgs/restart.webp', Utils.transStr('50f359'), goReStart,
+        target: target, targetListStates: targetListContext);
+    Widget btnAbolish = getBtns(
+        '放弃', 'imgs/abondon.webp', Utils.transStr('ebf1da'), goAbolish,
+        target: target, targetListStates: targetListContext);
+    List<Widget> btnGroups = [btnEdit, btnReStart, btnAbolish];
+
     switch (target.status) {
       case 1:
         _icon = CupertinoIcons.bolt_circle_fill;
@@ -109,23 +174,17 @@ class _DetailState extends State<Detail> {
       case 2:
         _icon = CupertinoIcons.xmark_seal_fill;
         _status_color = Utils.transStr(Constants.colorError);
-        btnGroups = [
-          getBtns('重来', 'imgs/restart.webp', Utils.transStr('50f359'), goEdit),
-        ];
+        btnGroups = [btnReStart];
         break;
       case 3:
         _icon = CupertinoIcons.trash_circle_fill;
         _status_color = Utils.transStr(Constants.colorMain);
-        btnGroups = [
-          getBtns('重来', 'imgs/restart.webp', Utils.transStr('50f359'), goEdit),
-        ];
+        btnGroups = [btnReStart];
         break;
       case 99:
         _icon = CupertinoIcons.checkmark_alt_circle_fill;
         _status_color = Utils.transStr(Constants.colorSuccess);
-        btnGroups = [
-          getBtns('重来', 'imgs/restart.webp', Utils.transStr('50f359'), goEdit),
-        ];
+        btnGroups = [btnReStart];
         break;
       default:
         _icon = CupertinoIcons.bolt;

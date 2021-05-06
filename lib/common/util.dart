@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:date_format/date_format.dart';
+import 'package:oktoast/oktoast.dart';
 import '../common/constant.dart';
 import 'dart:math';
 
@@ -65,5 +66,16 @@ class Utils {
 
   static bool isWeekend(DateTime day) {
     return day.weekday == DateTime.sunday || day.weekday == DateTime.saturday;
+  }
+
+  static void showCommonToast(String toastText, Color bgColor,
+      {int dur = 2000, ToastPosition pos = ToastPosition.top}) {
+    showToast(toastText,
+        duration: Duration(milliseconds: dur),
+        position: pos,
+        backgroundColor: bgColor.withOpacity(.8),
+        radius: 18.0,
+        textStyle: TextStyle(fontSize: 24.0),
+        textPadding: const EdgeInsets.fromLTRB(28, 18, 28, 18));
   }
 }

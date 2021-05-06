@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
 import '../common/util.dart';
+import '../common/constant.dart';
 
 /// `@status`: 1. 正常； 2.失败； 3. 删除； 99. 完成
 const Map<String, int> statusList = {
   'running': 1,
   'fail': 2,
-  'invalid': 3,
+  'delete': 3,
   'finish': 99,
 };
 
@@ -47,6 +48,11 @@ class TargetListStates with ChangeNotifier, DiagnosticableTreeMixin {
     }
   }
 
+  void edit(Target target, String title, int days) {
+    target.edit(title, days);
+    notifyListeners();
+  }
+
   /// 签到
   void sign(Target target) {
     target.sign();
@@ -54,9 +60,24 @@ class TargetListStates with ChangeNotifier, DiagnosticableTreeMixin {
   }
 
   /// 删除
-  void delete(Target target) {
+  Target delete(Target target) {
     target.delete();
     notifyListeners();
+    return target;
+  }
+
+  /// 放弃
+  Target abolish(Target target) {
+    target.abolish();
+    notifyListeners();
+    return target;
+  }
+
+  /// 放弃
+  Target reStart(Target target) {
+    target.reStart();
+    notifyListeners();
+    return target;
   }
 
   /// 获取任务
@@ -83,7 +104,6 @@ class Target {
   int id;
   String title;
   int days;
-  int finish;
   bool finishToday;
   List<String> finishHistory;
   DateTime startTime;
@@ -92,7 +112,7 @@ class Target {
   DateTime lastFinish;
 
   Target(this.id, this.title, this.days,
-      {this.finish = 0, this.status = 1, this.finishToday = false})
+      {this.status = 1, this.finishToday = false})
       // : startTime = DateTime.now(),
       : startTime = DateTime.now().subtract(const Duration(days: 10)),
         finishHistory = [
@@ -104,16 +124,37 @@ class Target {
         ];
 
   void sign() {
-    this.finish += 1;
     this.finishToday = true;
     this.finishHistory.add(Utils.getFormatDate(DateTime.now()));
     this.lastFinish = DateTime.now();
-
+    Utils.showCommonToast('给力！', Utils.transStr(Constants.colorSuccess));
     this.checkValid();
+  }
+
+  void edit(String title, int days) {
+    this.title = title;
+    this.days = days;
+    Utils.showCommonToast('操作成功。', Utils.transStr(Constants.colorActive));
+    this.checkValid();
+  }
+
+  void abolish() {
+    this.status = statusList['fail'];
+    Utils.showCommonToast('再见了...', Utils.transStr(Constants.colorMain));
   }
 
   void delete() {
     this.status = statusList['delete'];
+    Utils.showCommonToast('永别了...', Utils.transStr(Constants.colorMain));
+  }
+
+  void reStart() {
+    this.status = statusList['running'];
+    this.finishHistory = [];
+    this.finishToday = false;
+    this.lastFinish = null;
+    this.startTime = DateTime.now();
+    Utils.showCommonToast('为自己加油！', Utils.transStr(Constants.colorGood));
   }
 
   /// 每次启动时自检：重置所有finishToday；
@@ -122,7 +163,7 @@ class Target {
 
   //任务是否有效；是否已经达成
   bool checkValid() {
-    if (this.finish >= this.days) {
+    if (this.finishHistory.length >= this.days) {
       this.status = statusList['finish'];
     }
     return this.status == statusList['running'];

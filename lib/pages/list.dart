@@ -49,13 +49,13 @@ class _TargetListState extends State<TargetList> {
       String content = '';
       String statusColor;
       if (targetListAll.length == 0) {
-        content = '先去创建个任务吧.';
+        content = '先去创建个任务吧。';
         statusColor = Constants.colorWarning;
       } else if (targetListRunning.length > 0) {
-        content = '很好！全部完成了.';
+        content = '很好！今天全部完成了。';
         statusColor = Constants.colorSuccess;
       } else {
-        content = '没有有效的任务了.';
+        content = '没有有效的任务了。';
         statusColor = Constants.colorError;
       }
       // 没有进行中的
@@ -101,7 +101,7 @@ class TargetInfoBox extends StatelessWidget {
     if (targetContext.finishToday) {
       var content = targetContext.title +
           '(' +
-          targetContext.finish.toString() +
+          targetContext.finishHistory.length.toString() +
           '/' +
           targetContext.days.toString() +
           ')';
@@ -165,8 +165,8 @@ class TargetInfoRedFlag extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-          color:
-              Utils.getPercentColor(targetContext.finish, targetContext.days)),
+          color: Utils.getPercentColor(
+              targetContext.finishHistory.length, targetContext.days)),
       width: 10,
     );
   }
@@ -200,8 +200,8 @@ class TargetInfoSubText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String content =
-        Utils.getPercentText(targetContext.finish, targetContext.days);
+    String content = Utils.getPercentText(
+        targetContext.finishHistory.length, targetContext.days);
     return StyleText(
       content,
       TextStyle(

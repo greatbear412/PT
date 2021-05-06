@@ -32,16 +32,10 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        behavior: HitTestBehavior.translucent,
-        onTap: () {
-          // 触摸收起键盘
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
-        child: OKToast(
-            child: MaterialApp(
-          theme: ThemeData(backgroundColor: Colors.white),
-          home: Start(),
-        )));
+    return OKToast(
+        child: MaterialApp(
+      theme: ThemeData(backgroundColor: Colors.white),
+      home: Start(),
+    ));
   }
 }

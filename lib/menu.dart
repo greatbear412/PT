@@ -6,7 +6,7 @@ import 'common/util.dart';
 import 'common/constant.dart';
 
 import 'pages/list.dart';
-import 'pages/edit.dart';
+import 'pages/create.dart';
 import 'pages/management.dart';
 
 class MainMenu extends StatefulWidget {
@@ -31,7 +31,7 @@ class _MainMenuState extends State<MainMenu> {
   List<Widget> _buildScreens(context) {
     return [
       MainScreen(menuScreenContext: context, child: TargetList()),
-      MainScreen(menuScreenContext: context, child: EditTarget()),
+      MainScreen(menuScreenContext: context, child: CreateTarget()),
       MainScreen(menuScreenContext: context, child: Management()),
     ];
   }

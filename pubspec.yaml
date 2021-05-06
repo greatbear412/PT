@@ -56,6 +56,7 @@ flutter:
     - imgs/fist.webp
     - imgs/panda.webp
     - imgs/edit.webp
+    - imgs/create.webp
     - imgs/glove.webp
     - imgs/glove_error.webp
     - imgs/panda_gun.webp

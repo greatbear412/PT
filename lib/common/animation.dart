@@ -34,7 +34,8 @@ class GrowTransition extends StatelessWidget {
 }
 
 class WidgetTransition extends StatefulWidget {
-  WidgetTransition({this.initialChild, this.duration});
+  WidgetTransition({this.initialChild, this.duration, Key key})
+      : super(key: key);
 
   final Widget initialChild;
   final int duration;
@@ -48,25 +49,28 @@ class _WidgetTransitionState extends State<WidgetTransition> {
   Widget _oldChild;
   String _key;
 
-  Timer timer;
+  Timer timerInit;
+  Timer timerTranstion;
 
   void transfer(key, newChild) {
     if (_key != key) {
       return;
     }
     if (_oldChild != newChild) {
-      setState(() {
-        _child = AnimatedOpacity(
-            opacity: 0,
-            duration: Duration(milliseconds: widget.duration),
-            child: _oldChild);
-        timer = Timer(Duration(milliseconds: widget.duration), () {
-          setState(() {
-            _child = AnimatedOpacity(
-                opacity: 1,
-                duration: Duration(milliseconds: widget.duration),
-                child: newChild);
-            _oldChild = newChild;
+      timerInit = Timer(Duration.zero, () {
+        setState(() {
+          _child = AnimatedOpacity(
+              opacity: 0,
+              duration: Duration(milliseconds: widget.duration),
+              child: _oldChild);
+          timerTranstion = Timer(Duration(milliseconds: widget.duration), () {
+            setState(() {
+              _child = AnimatedOpacity(
+                  opacity: 1,
+                  duration: Duration(milliseconds: widget.duration),
+                  child: newChild);
+              _oldChild = newChild;
+            });
           });
         });
       });
@@ -93,7 +97,9 @@ class _WidgetTransitionState extends State<WidgetTransition> {
 
   @override
   dispose() {
-    timer.cancel();
+    timerInit?.cancel();
+    timerTranstion?.cancel();
+    bus.off("transferGlove");
     super.dispose();
   }
 }
