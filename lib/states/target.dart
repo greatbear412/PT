@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 
 import '../common/util.dart';
 import '../common/constant.dart';
+import '../common/bus.dart';
 
 /// `@status`: 1. 正常； 2.失败； 3. 删除； 99. 完成
 const Map<String, int> statusList = {
@@ -14,18 +15,18 @@ const Map<String, int> statusList = {
 
 class TargetListStates with ChangeNotifier, DiagnosticableTreeMixin {
   List<Target> _taskList = [
-    Target(1, '早起', 8, status: 1),
+    Target(1, '早起', 1, status: 1),
     // Target(2, '背单词qweeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee', 28, status: 1),
     // Target(3, '背单词', 14, status: 2),
     // Target(4, '背单词', 24, status: 2),
-    Target(5, '背单词', 13, status: 2),
+    // Target(5, '背单词', 13, status: 2),
     // Target(6, '背单词', 28, status: 2),
     // Target(7, '背单词', 14, status: 3),
-    Target(8, '背单词', 23, status: 3),
+    // Target(8, '背单词', 23, status: 3),
     // Target(9, '背单词', 23, status: 3),
     // Target(10, '背单词', 23, status: 3),
     // Target(11, '背单词', 24, status: 99),
-    Target(12, '背单词', 12, status: 99),
+    // Target(12, '背单词', 12, status: 99),
     // Target(13, '背单词', 176, status: 99),
     // Target(14, '背单词', 15, status: 99),
   ];
@@ -113,14 +114,14 @@ class Target {
 
   Target(this.id, this.title, this.days,
       {this.status = 1, this.finishToday = false})
-      // : startTime = DateTime.now(),
-      : startTime = DateTime.now().subtract(const Duration(days: 10)),
+      : startTime = DateTime.now(),
+        // : startTime = DateTime.now().subtract(const Duration(days: 10)),
         finishHistory = [
-          Utils.getFormatDate(DateTime.now().subtract(const Duration(days: 1))),
+          // Utils.getFormatDate(DateTime.now().subtract(const Duration(days: 1))),
           // DateTime.now().subtract(const Duration(days: 4)),
           // DateTime.now().subtract(const Duration(days: 5)),
           // DateTime.now().subtract(const Duration(days: 7)),
-          Utils.getFormatDate(DateTime.now().subtract(const Duration(days: 10)))
+          // Utils.getFormatDate(DateTime.now().subtract(const Duration(days: 10)))
         ];
 
   void sign() {
@@ -165,6 +166,7 @@ class Target {
   bool checkValid() {
     if (this.finishHistory.length >= this.days) {
       this.status = statusList['finish'];
+      bus.emit("finish", this);
     }
     return this.status == statusList['running'];
   }

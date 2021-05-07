@@ -74,7 +74,7 @@ class TextFieldWidget extends StatelessWidget {
         style: style,
         decoration: InputDecoration(
             labelText: labelText,
-            labelStyle: TextStyle(color: Colors.white),
+            labelStyle: TextStyle(color: Colors.grey[200]),
             hintText: hintText,
             hintStyle: TextStyle(color: Colors.white),
             // prefixIcon: Icon(Icons.email),
@@ -86,7 +86,7 @@ class TextFieldWidget extends StatelessWidget {
       decoration: BoxDecoration(
           // 下滑线浅灰色，宽度1像素
           border:
-              Border(bottom: BorderSide(color: Colors.grey[200], width: 1.0))),
+              Border(bottom: BorderSide(color: Colors.grey[200], width: 1.5))),
     );
   }
 }

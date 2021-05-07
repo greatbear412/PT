@@ -4,10 +4,12 @@ import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../menu.dart';
+import './finish.dart';
 import '../common/constant.dart';
 import '../states/target.dart';
 import '../common/util.dart';
 import '../components/text.dart';
+import '../common/bus.dart';
 
 class Start extends StatefulWidget {
   @override
@@ -20,6 +22,18 @@ class _StartState extends State<Start> {
   void goToCreateTarget(TargetListStates states) {
     int initialIndex = isNew ? 1 : 0;
     pushNewScreen(context, screen: MainMenu(initialIndex: initialIndex));
+  }
+
+  @override
+  void initState() {
+    // 任务完成后，跳转至成就页面
+    bus.on("finish", (target) {
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) => Finish(target: target)));
+    });
+    super.initState();
   }
 
   @override

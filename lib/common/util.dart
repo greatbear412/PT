@@ -52,6 +52,11 @@ class Utils {
     return formatDate(date, [yyyy, '-', mm, '-', dd]);
   }
 
+  static int getPassedDate(DateTime date) {
+    var now = DateTime.now();
+    return now.difference(date).inDays;
+  }
+
   static int getRandomInit(int src) {
     return rng.nextInt(src);
   }
