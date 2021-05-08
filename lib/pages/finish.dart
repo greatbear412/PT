@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 
 import '../states/target.dart';
 import '../common/util.dart';
-import '../components/text.dart';
 import '../common/constant.dart';
+import '../components/text.dart';
 
 class Finish extends StatefulWidget {
   final Target target;
@@ -20,7 +20,7 @@ class _FinishState extends State<Finish> {
     return Scaffold(
         body: Container(
             height: Utils.getScreenHeight(context),
-            color: Utils.transStr('d2d2d2'),
+            color: Utils.transStr('ffffff'),
             child: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
               child: Column(
@@ -88,24 +88,25 @@ class _FinishState extends State<Finish> {
                             ],
                           ),
                         ),
-                        KeyText(
-                          text: widget.target.title,
+                        StyleText(
+                          widget.target.title,
+                          TextStyle(
+                            color: Utils.transStr(Constants.colorError),
+                            fontSize: 35,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          align: TextAlign.start,
                         ),
                         SizedBox(height: 20),
                       ],
                     ),
                   ),
                   SizedBox(height: 10),
-                  StyleText(
-                    '"乘风破浪会有时，直挂云帆济沧海"',
-                    TextStyle(
-                      color: Utils.transStr('494949'),
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    align: TextAlign.start,
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: QuotaText(text: "乘风破浪会有时，直挂云帆济沧海"),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 30),
                   Image(
                       image: AssetImage('imgs/finish.webp'),
                       repeat: ImageRepeat.noRepeat,
@@ -141,7 +142,7 @@ class KeyText extends StatelessWidget {
     return StyleText(
       text,
       TextStyle(
-        color: Utils.transStr('000'),
+        color: Utils.transStr(Constants.colorGood),
         fontSize: 24,
         fontWeight: FontWeight.bold,
       ),

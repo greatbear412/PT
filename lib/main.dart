@@ -4,18 +4,29 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
 import 'package:oktoast/oktoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
 
 import 'states/target.dart';
-
 import 'pages/start.dart';
 
-void main() {
+SharedPreferences prefs;
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  var prefs = await SharedPreferences.getInstance();
+  var taskListJson = (prefs.getString('PTList') ?? '{"data": []}');
+  var taskListMap = json.decode(taskListJson);
+  if (taskListMap is Map<String, dynamic> == false) {
+    taskListMap = {"data": []};
+  }
+
   runApp(
     /// Providers are above [MyApp] instead of inside it, so that tests
     /// can use [MyApp] while mocking the providers
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => TargetListStates()),
+        ChangeNotifierProvider(
+            create: (_) => TargetListStates.fromJson(taskListMap)),
       ],
       child: MyApp(),
     ),

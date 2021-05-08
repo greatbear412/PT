@@ -127,7 +127,7 @@ class TargetInfoBox extends StatelessWidget {
             BoxShadow(
                 color: Colors.black54,
                 offset: Offset(0.0, 4.0),
-                blurRadius: 12.0)
+                blurRadius: 5.0)
           ]),
           child: ConstrainedBox(
             constraints:
@@ -138,7 +138,11 @@ class TargetInfoBox extends StatelessWidget {
               Expanded(
                   flex: 1,
                   child: Container(
-                    decoration: BoxDecoration(color: Utils.transStr('221e1f')),
+                    decoration:
+                        // 信息板背景
+                        BoxDecoration(
+                            color: Utils.transStr(Constants.colorMain)
+                                .withOpacity(.6)),
                     child: Padding(
                       padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
                       child: Flex(direction: Axis.horizontal, children: [
@@ -205,7 +209,7 @@ class TargetInfoSubText extends StatelessWidget {
     return StyleText(
       content,
       TextStyle(
-        color: Utils.transStr(Constants.colorNormal),
+        color: Utils.transStr('ffffe7'),
         fontSize: 12,
         fontWeight: FontWeight.w300,
       ),

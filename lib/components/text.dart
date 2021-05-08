@@ -4,6 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../common/util.dart';
+import '../common/constant.dart';
+
 class StyleText extends StatelessWidget {
   final String text;
   final TextStyle style;
@@ -88,5 +91,45 @@ class TextFieldWidget extends StatelessWidget {
           border:
               Border(bottom: BorderSide(color: Colors.grey[200], width: 1.5))),
     );
+  }
+}
+
+class QuotaText extends StatelessWidget {
+  final String text;
+  QuotaText({this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return ConstrainedBox(
+        constraints: BoxConstraints(maxHeight: 50),
+        child: Container(
+          child: Row(
+            children: [
+              Container(
+                width: 5,
+                color: Utils.transStr('f9f871'),
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                  child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(
+                    CupertinoIcons.quote_bubble_fill,
+                    color: Utils.transStr('f9f871'),
+                  ),
+                  StyleText(
+                    text,
+                    TextStyle(fontSize: 18, color: Utils.transStr('a39d9d')),
+                    lines: 2,
+                  )
+                ],
+              ))
+            ],
+          ),
+        ));
   }
 }

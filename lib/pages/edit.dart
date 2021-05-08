@@ -31,8 +31,9 @@ class _EditTargetState extends State<EditTarget> {
 
       _utaskController.clear();
       _udaysController.clear();
-      checkValid();
-      Navigator.pop(context, widget.target);
+      if (widget.target.status != statusList['finish']) {
+        Navigator.pop(context, widget.target);
+      }
     } else {
       Utils.showCommonToast('请填写必要字段', Utils.transStr(Constants.colorError));
     }
@@ -43,8 +44,15 @@ class _EditTargetState extends State<EditTarget> {
   }
 
   void onDaysChange(String days) {
-    if (days != null && days != '' && int.parse(days.toString()) > 365) {
-      _udaysController.value = TextEditingValue(text: '365');
+    if (days != null && days != '') {
+      var inputDays = int.parse(days.toString());
+      if (inputDays > 365) {
+        _udaysController.value = TextEditingValue(text: '365');
+      }
+      if (inputDays <= widget.target.finishHistory.length) {
+        _udaysController.value = TextEditingValue(
+            text: (widget.target.finishHistory.length + 1).toString());
+      }
     }
     checkValid();
   }

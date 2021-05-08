@@ -104,8 +104,15 @@ class TargetListView extends StatelessWidget {
                 width: Utils.getScreenWidth(context) - 50,
                 margin: const EdgeInsets.fromLTRB(20, 0, 20, 30),
                 decoration: BoxDecoration(
-                  color: _status_color.withOpacity(.7),
+                  color: _status_color.withOpacity(.5),
                   borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                  boxShadow: [
+                    //阴影
+                    BoxShadow(
+                        color: _status_color.withOpacity(.5),
+                        offset: Offset(0.0, 4.0),
+                        blurRadius: 5.0)
+                  ],
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,

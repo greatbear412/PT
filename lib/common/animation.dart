@@ -48,15 +48,22 @@ class _WidgetTransitionState extends State<WidgetTransition> {
   Widget _child;
   Widget _oldChild;
   String _key;
+  List<List> taskQueue = [];
+  bool running = false;
 
   Timer timerInit;
   Timer timerTranstion;
 
-  void transfer(key, newChild) {
-    if (_key != key) {
-      return;
+  void runTransferQueue() {
+    if (taskQueue.length > 0) {
+      var task = taskQueue.removeAt(0);
+      transfer(task[0], task[1]);
     }
-    if (_oldChild != newChild) {
+  }
+
+  void transfer(String key, Widget newChild) {
+    if (_key == key && _oldChild != newChild) {
+      running = true;
       timerInit = Timer(Duration.zero, () {
         setState(() {
           _child = AnimatedOpacity(
@@ -71,9 +78,13 @@ class _WidgetTransitionState extends State<WidgetTransition> {
                   child: newChild);
               _oldChild = newChild;
             });
+            running = false;
+            runTransferQueue();
           });
         });
       });
+    } else {
+      runTransferQueue();
     }
   }
 
@@ -85,7 +96,10 @@ class _WidgetTransitionState extends State<WidgetTransition> {
       if (_key == null) {
         _key = arg['key'];
       }
-      transfer(arg['key'], arg['body']);
+      taskQueue.add([arg['key'], arg['body']]);
+      if (running == false) {
+        runTransferQueue();
+      }
     });
     super.initState();
   }

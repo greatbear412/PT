@@ -18,7 +18,7 @@ class Constants {
     'Sunday': 7
   };
   static String bgUrl =
-      'https://fight-1259008024.cos.ap-chengdu.myqcloud.com/bg.jpeg';
+      'https://fight-1259008024.cos.ap-chengdu.myqcloud.com/bg.webp';
 
   static Map<String, List<String>> courageList = {
     'low': [

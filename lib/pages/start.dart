@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
+import 'dart:convert';
 
+import '../main.dart';
 import '../menu.dart';
 import './finish.dart';
 import '../common/constant.dart';
@@ -36,6 +38,14 @@ class _StartState extends State<Start> {
     super.initState();
   }
 
+  void store(List<Target> targetList) {
+    var taskListJson = [];
+    targetList.map((Target target) {
+      taskListJson.add(target.toString());
+    });
+    prefs?.setString('PTList', json.encode({'data': taskListJson}));
+  }
+
   @override
   Widget build(BuildContext context) {
     precacheImage(NetworkImage(Constants.bgUrl), context);
@@ -44,6 +54,8 @@ class _StartState extends State<Start> {
     final List<Target> targetList = targetListContext.getTargetList();
     isNew = targetList.length == 0;
     final String content = isNew ? '开始吧 :)' : '继续挑战 ？';
+
+    store(targetList);
 
     return Scaffold(
         body: Container(
