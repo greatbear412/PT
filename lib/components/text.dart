@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../common/util.dart';
-import '../common/constant.dart';
 
 class StyleText extends StatelessWidget {
   final String text;

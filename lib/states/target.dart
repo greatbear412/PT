@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
+import 'dart:convert';
 
 import '../common/util.dart';
 import '../common/constant.dart';
@@ -14,11 +15,11 @@ const Map<String, int> statusList = {
 };
 
 class TargetListStates with ChangeNotifier, DiagnosticableTreeMixin {
-  final List<Target> _taskList = [];
+  List<Target> _taskList = [];
 
-  TargetListStates.fromJson(Map<String, dynamic> json) {
-    json['data'].map((res) {
-      _taskList.add(Target.fromJson(res));
+  TargetListStates.fromJson(dynamic dataSrc) {
+    dataSrc['data'].forEach((res) {
+      _taskList.add(Target.fromJson(json.decode(res)));
     });
   }
 
@@ -104,15 +105,19 @@ class Target {
       : startTime = DateTime.now(),
         finishHistory = [];
 
-  Target.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
-        title = json['title'],
-        days = json['days'],
-        finishToday = json['finishToday'],
-        finishHistory = json['finishHistory'],
-        startTime = json['startTime'],
-        status = json['status'],
-        lastFinish = json['lastFinish'];
+  Target.fromJson(Map<String, dynamic> dataSrc)
+      : id = dataSrc['id'],
+        title = dataSrc['title'],
+        days = dataSrc['days'],
+        finishToday = dataSrc['finishToday'],
+        startTime = Utils.transferStrToDatetime(dataSrc['startTime']),
+        finishHistory = [],
+        status = dataSrc['status'],
+        lastFinish = Utils.transferStrToDatetime(dataSrc['lastFinish']) {
+    dataSrc['finishHistory']?.forEach((res) {
+      finishHistory.add(res?.toString());
+    });
+  }
 
   void sign() {
     this.finishToday = true;
@@ -159,5 +164,19 @@ class Target {
       bus.emit("finish", this);
     }
     return this.status == statusList['running'];
+  }
+
+  @override
+  String toString() {
+    return json.encode({
+      'id': this.id,
+      'title': this.title,
+      'days': this.days,
+      'finishToday': this.finishToday,
+      'finishHistory': this.finishHistory,
+      'startTime': this.startTime?.toString(),
+      'status': this.status,
+      'lastFinish': this.lastFinish?.toString()
+    });
   }
 }

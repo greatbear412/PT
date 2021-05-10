@@ -83,4 +83,12 @@ class Utils {
         textStyle: TextStyle(fontSize: 24.0),
         textPadding: const EdgeInsets.fromLTRB(28, 18, 28, 18));
   }
+
+  static DateTime transferStrToDatetime(String dt) {
+    if (dt == null || dt == 'null' || dt == 'none') {
+      return null;
+    } else {
+      return DateTime.parse(dt);
+    }
+  }
 }

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import '../common/constant.dart';
-import '../common/util.dart';
 
 class CommonPosition extends StatelessWidget {
   final Widget child;
@@ -10,4 +8,3 @@ class CommonPosition extends StatelessWidget {
     return Positioned(left: 0, right: 0, top: 0, bottom: 0, child: child);
   }
 }
-

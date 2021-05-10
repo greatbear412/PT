@@ -13,10 +13,10 @@ import 'pages/start.dart';
 SharedPreferences prefs;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  var prefs = await SharedPreferences.getInstance();
+  prefs = await SharedPreferences.getInstance();
   var taskListJson = (prefs.getString('PTList') ?? '{"data": []}');
   var taskListMap = json.decode(taskListJson);
-  if (taskListMap is Map<String, dynamic> == false) {
+  if (taskListMap == null) {
     taskListMap = {"data": []};
   }
 

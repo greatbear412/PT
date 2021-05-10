@@ -38,11 +38,9 @@ class _StartState extends State<Start> {
     super.initState();
   }
 
-  void store(List<Target> targetList) {
-    var taskListJson = [];
-    targetList.map((Target target) {
-      taskListJson.add(target.toString());
-    });
+  void store(List<Target> targetList) async {
+    var taskListJson =
+        targetList.map((Target target) => target.toString()).toList();
     prefs?.setString('PTList', json.encode({'data': taskListJson}));
   }
 
