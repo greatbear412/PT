@@ -58,8 +58,9 @@ class _StartState extends State<Start> {
     return Scaffold(
         body: Container(
             decoration: BoxDecoration(
+                color: Utils.transStr(Constants.colorPandaBG),
                 image: DecorationImage(
-                    image: AssetImage('imgs/panda.webp'), fit: BoxFit.cover)),
+                    image: AssetImage('imgs/panda.webp'), fit: BoxFit.contain)),
             child: Stack(
               children: [
                 Positioned(

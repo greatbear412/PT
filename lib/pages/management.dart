@@ -97,83 +97,93 @@ class TargetListView extends StatelessWidget {
               _icon = CupertinoIcons.bolt;
               _status_color = Utils.transStr(Constants.colorGood);
           }
-          return new Listener(
-              onPointerDown: (PointerDownEvent event) => pushNewScreen(context,
-                  screen: Detail(target), withNavBar: false),
-              child: Container(
-                width: Utils.getScreenWidth(context) - 50,
-                margin: const EdgeInsets.fromLTRB(20, 0, 20, 30),
-                decoration: BoxDecoration(
-                  color: _status_color.withOpacity(.5),
-                  borderRadius: BorderRadius.all(Radius.circular(25.0)),
-                  boxShadow: [
-                    //阴影
-                    BoxShadow(
-                        color: _status_color.withOpacity(.5),
-                        offset: Offset(0.0, 4.0),
-                        blurRadius: 5.0)
-                  ],
+          return new Container(
+            width: Utils.getScreenWidth(context) - 50,
+            margin: const EdgeInsets.fromLTRB(20, 0, 20, 30),
+            decoration: BoxDecoration(
+              color: _status_color.withOpacity(.5),
+              borderRadius: BorderRadius.all(Radius.circular(25.0)),
+              boxShadow: [
+                //阴影
+                BoxShadow(
+                    color: _status_color.withOpacity(.5),
+                    offset: Offset(0.0, 2.0),
+                    blurRadius: 8.0)
+              ],
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                SizedBox(
+                  width: 10,
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Icon(
-                      _icon,
-                      size: 50,
-                      color: Colors.white,
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    Expanded(
-                        flex: 1,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            StyleText(
-                              target.title,
-                              TextStyle(
-                                color: Colors.white,
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              lines: 1,
-                              align: TextAlign.start,
-                            ),
-                            StyleText(
-                              subText,
-                              TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                              ),
-                              lines: 1,
-                            ),
-                          ],
-                        )),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    StyleText(
-                      percentage,
-                      TextStyle(
-                        color: Colors.white,
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      lines: 1,
-                      align: TextAlign.center,
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                  ],
+                Listener(
+                    onPointerDown: (PointerDownEvent event) => pushNewScreen(
+                        context,
+                        screen: Detail(target),
+                        withNavBar: false),
+                    child: Container(
+                        decoration: BoxDecoration(boxShadow: [
+                          //阴影
+                          BoxShadow(
+                              color: Colors.black26,
+                              offset: Offset(0.0, 4.0),
+                              blurRadius: 10.0)
+                        ], shape: BoxShape.circle),
+                        child: Icon(
+                          _icon,
+                          size: 50,
+                          color: Colors.white,
+                        ))),
+                SizedBox(
+                  width: 20,
                 ),
-              ));
+                Expanded(
+                    flex: 1,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        StyleText(
+                          target.title,
+                          TextStyle(
+                            color: Colors.white,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          lines: 1,
+                          align: TextAlign.start,
+                        ),
+                        StyleText(
+                          subText,
+                          TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
+                          lines: 1,
+                        ),
+                      ],
+                    )),
+                SizedBox(
+                  width: 20,
+                ),
+                StyleText(
+                  percentage,
+                  TextStyle(
+                    color: Colors.white,
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  lines: 1,
+                  align: TextAlign.center,
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+              ],
+            ),
+          );
         });
   }
 }

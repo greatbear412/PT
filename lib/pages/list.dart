@@ -61,7 +61,7 @@ class _TargetListState extends State<TargetList> {
       // 没有进行中的
       tlContainer = Container(
           width: double.infinity,
-          padding: EdgeInsets.only(top: 20),
+          padding: EdgeInsets.only(top: 50),
           child: Align(
             alignment: Alignment.topCenter,
             child: Container(
@@ -79,10 +79,13 @@ class _TargetListState extends State<TargetList> {
     return Container(
         padding: const EdgeInsets.only(bottom: 36),
         child: Stack(children: [
-          CommonPosition(FadeInImage(
-            placeholder: AssetImage('imgs/panda.webp'),
-            image: NetworkImage(Constants.bgUrl),
-            fit: BoxFit.cover,
+          CommonPosition(Container(
+            color: Utils.transStr(Constants.colorPandaBG),
+            child: FadeInImage(
+              placeholder: AssetImage('imgs/panda.webp'),
+              image: NetworkImage(Constants.bgUrl),
+              fit: BoxFit.cover,
+            ),
           )),
           CommonPosition(tlContainer)
         ]));
@@ -95,6 +98,7 @@ class TargetInfoBox extends StatelessWidget {
   final TargetListStates targetListContext;
   TargetInfoBox(this.targetContext, this.targetListContext);
 
+  Widget wgChild;
   @override
   Widget build(BuildContext context) {
     // 已完成
@@ -105,7 +109,7 @@ class TargetInfoBox extends StatelessWidget {
           '/' +
           targetContext.days.toString() +
           ')';
-      return ConstrainedBox(
+      wgChild = ConstrainedBox(
         constraints: BoxConstraints(maxHeight: 60.0),
         child: Row(
           children: [
@@ -120,43 +124,42 @@ class TargetInfoBox extends StatelessWidget {
         ),
       );
     } else {
-      // 进行中
-      return Container(
-          decoration: BoxDecoration(boxShadow: [
-            //阴影
-            BoxShadow(
-                color: Colors.black54,
-                offset: Offset(0.0, 4.0),
-                blurRadius: 5.0)
-          ]),
-          child: ConstrainedBox(
-            constraints:
-                BoxConstraints(minWidth: double.infinity, maxHeight: 120.0),
-            child: Container(
-                child: Row(mainAxisSize: MainAxisSize.max, children: [
-              TargetInfoRedFlag(targetContext),
-              Expanded(
-                  flex: 1,
-                  child: Container(
-                    decoration:
-                        // 信息板背景
-                        BoxDecoration(
-                            color: Utils.transStr(Constants.colorMain)
-                                .withOpacity(.6)),
-                    child: Padding(
-                      padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
-                      child: Flex(direction: Axis.horizontal, children: [
-                        Expanded(flex: 3, child: TargetInfoText(targetContext)),
-                        Expanded(
-                            flex: 1,
-                            child: TargetInfoSign(
-                                targetContext, targetListContext))
-                      ]),
-                    ),
-                  ))
-            ])),
-          ));
+      wgChild = ConstrainedBox(
+        constraints:
+            BoxConstraints(minWidth: double.infinity, maxHeight: 120.0),
+        child: Container(
+            child: Row(mainAxisSize: MainAxisSize.max, children: [
+          TargetInfoRedFlag(targetContext),
+          Expanded(
+              flex: 1,
+              child: Container(
+                decoration:
+                    // 信息板背景
+                    BoxDecoration(
+                        color: Utils.transStr(Constants.colorMain)
+                            .withOpacity(.6)),
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
+                  child: Flex(direction: Axis.horizontal, children: [
+                    Expanded(flex: 3, child: TargetInfoText(targetContext)),
+                    Expanded(
+                        flex: 1,
+                        child: TargetInfoSign(targetContext, targetListContext))
+                  ]),
+                ),
+              ))
+        ])),
+      )
+          // 进行中
+          ;
     }
+    return Container(
+        decoration: BoxDecoration(boxShadow: [
+          //阴影
+          BoxShadow(
+              color: Colors.black54, offset: Offset(0.0, 4.0), blurRadius: 5.0)
+        ]),
+        child: wgChild);
   }
 }
 

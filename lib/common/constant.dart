@@ -7,6 +7,7 @@ class Constants {
   static String colorSuccess = '8CD790';
   static String colorError = 'ff6b6b';
   static String colorDelete = '7f6afd';
+  static String colorPandaBG = '231e1f';
 
   static Map<String, int> days = {
     'Monday': 1,
