@@ -1,4 +1,6 @@
-class Constants {
+import 'package:flutter/foundation.dart';
+
+class Constants with ChangeNotifier, DiagnosticableTreeMixin {
   static String colorMain = '221e1f';
   static String colorActive = 'f7c92f';
   static String colorNormal = 'C5C6B6';
@@ -18,6 +20,7 @@ class Constants {
     'Saturday': 6,
     'Sunday': 7
   };
+
   static String bgUrl =
       'https://fight-1259008024.cos.ap-chengdu.myqcloud.com/bg.webp';
 
@@ -37,4 +40,12 @@ class Constants {
     ],
     'high': ['拾贝者向你展示一个美妙的贝壳时，他其实是在展示背后的大海.']
   };
+
+  double deviceWidth;
+  double deviceHeight;
+  cacheDeviceSize(double width, double height) {
+    deviceWidth = width;
+    deviceHeight = height;
+    // notifyListeners();
+  }
 }

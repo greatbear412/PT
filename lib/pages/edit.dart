@@ -78,6 +78,8 @@ class _EditTargetState extends State<EditTarget> {
   Widget build(BuildContext context) {
     precacheImage(AssetImage('imgs/glove.webp'), context);
     final targetListContext = context.watch<TargetListStates>();
+    final constants = context.read<Constants>();
+
     return Scaffold(
         body: Container(
             color: Utils.transStr('000'),
@@ -93,61 +95,54 @@ class _EditTargetState extends State<EditTarget> {
                         child: Image(
                             image: AssetImage('imgs/edit.webp'),
                             repeat: ImageRepeat.noRepeat,
-                            width: Utils.getScreenWidth(context)))),
+                            fit: BoxFit.contain))),
                 Container(
                   child: BackdropFilter(
                     filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
                     child: Container(
-                        // height: 200,
-                        color: Colors.black.withOpacity(0.3),
-                        // padding: const EdgeInsets.only(bottom: 100),
-                        alignment: Alignment.center,
-                        child: GestureDetector(
-                          behavior: HitTestBehavior.translucent,
-                          onTap: () {
-                            // 触摸收起键盘
-                            FocusScope.of(context).requestFocus(FocusNode());
-                          },
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              TextFieldWidget(
-                                  controller: _utaskController,
-                                  labelText: "任务",
-                                  style: TextStyle(color: Colors.white),
-                                  onChange: onTaskChange),
-                              TextFieldWidget(
-                                  controller: _udaysController,
-                                  keyboardType: TextInputType.number,
-                                  labelText: "期限(最大365)",
-                                  style: TextStyle(color: Colors.white),
-                                  onChange: onDaysChange,
-                                  formatter: [
-                                    WhitelistingTextInputFormatter(
-                                        RegExp("[0-9]"))
-                                  ]),
-                              Container(
-                                  margin: const EdgeInsets.only(top: 10),
-                                  child: ElevatedButton(
-                                    child: StyleText(
-                                      '提交',
-                                      TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    style: ButtonStyle(
-                                        backgroundColor:
-                                            MaterialStateProperty.resolveWith(
-                                                getColor)),
-                                    onPressed: () {
-                                      submit(targetListContext);
-                                    },
-                                  ))
-                            ],
-                          ),
-                        )),
+                      // height: 200,
+                      color: Colors.black.withOpacity(0.3),
+                      // padding: const EdgeInsets.only(bottom: 100),
+                      alignment: Alignment.center,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          TextFieldWidget(
+                              controller: _utaskController,
+                              labelText: "任务",
+                              style: TextStyle(color: Colors.white),
+                              onChange: onTaskChange),
+                          TextFieldWidget(
+                              controller: _udaysController,
+                              keyboardType: TextInputType.number,
+                              labelText: "期限(最大365)",
+                              style: TextStyle(color: Colors.white),
+                              onChange: onDaysChange,
+                              formatter: [
+                                WhitelistingTextInputFormatter(RegExp("[0-9]"))
+                              ]),
+                          Container(
+                              margin: const EdgeInsets.only(top: 10),
+                              child: ElevatedButton(
+                                child: StyleText(
+                                  '提交',
+                                  TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.resolveWith(
+                                            getColor)),
+                                onPressed: () {
+                                  submit(targetListContext);
+                                },
+                              ))
+                        ],
+                      ),
+                    ),
                   ),
                 )
               ],

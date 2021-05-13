@@ -7,8 +7,9 @@ import 'package:oktoast/oktoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
+import 'common/constant.dart';
 import 'states/target.dart';
-import 'pages/start.dart';
+import './pages/start.dart';
 
 SharedPreferences prefs;
 void main() async {
@@ -27,6 +28,7 @@ void main() async {
       providers: [
         ChangeNotifierProvider(
             create: (_) => TargetListStates.fromJson(taskListMap)),
+        ChangeNotifierProvider(create: (_) => Constants())
       ],
       child: MyApp(),
     ),
@@ -43,10 +45,14 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return OKToast(
-        child: MaterialApp(
-      theme: ThemeData(backgroundColor: Colors.white),
-      home: Start(),
-    ));
+    return GestureDetector(
+        onTap: () {
+          WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+        },
+        child: OKToast(
+            child: MaterialApp(
+          theme: ThemeData(backgroundColor: Colors.white),
+          home: Start(),
+        )));
   }
 }

@@ -38,15 +38,24 @@ class _StartState extends State<Start> {
     super.initState();
   }
 
+  /// 读取缓存数据
   void store(List<Target> targetList) async {
     var taskListJson =
         targetList.map((Target target) => target.toString()).toList();
     prefs?.setString('PTList', json.encode({'data': taskListJson}));
   }
 
+  /// 缓存设备宽高
+  void cacheDevice(Constants constants) {
+    if (constants.deviceWidth == null || constants.deviceHeight == null) {
+      constants.cacheDeviceSize(
+          Utils.getScreenWidth(context), Utils.getScreenHeight(context));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    precacheImage(NetworkImage(Constants.bgUrl), context);
+    // precacheImage(NetworkImage(Constants.bgUrl), context);
     final TargetListStates targetListContext =
         context.watch<TargetListStates>();
     final List<Target> targetList = targetListContext.getTargetList();
@@ -55,46 +64,43 @@ class _StartState extends State<Start> {
 
     store(targetList);
 
+    final constants = context.read<Constants>();
+    cacheDevice(constants);
+
+    print('start rebuild');
+
     return Scaffold(
         body: Container(
+            padding: const EdgeInsets.only(bottom: 50),
             decoration: BoxDecoration(
                 color: Utils.transStr(Constants.colorPandaBG),
                 image: DecorationImage(
                     image: AssetImage('imgs/panda.webp'), fit: BoxFit.contain)),
-            child: Stack(
-              children: [
-                Positioned(
-                    bottom: 50,
-                    left: 0,
-                    right: 0,
-                    child: Listener(
-                        onPointerDown: (PointerDownEvent event) =>
-                            goToCreateTarget(targetListContext),
-                        child: Center(
-                          child: Container(
-                            width: 300,
-                            height: 80,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8)),
-                                color: Utils.transStr(Constants.colorActive)),
-                            child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Icon(CupertinoIcons.star_circle,
-                                      size: 40, color: Colors.white),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  MainText(content)
-                                ]),
+            child: Listener(
+                onPointerDown: (PointerDownEvent event) =>
+                    goToCreateTarget(targetListContext),
+                child: Center(
+                  child: Container(
+                    width: 300,
+                    height: 80,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        color: Utils.transStr(Constants.colorActive)),
+                    child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(CupertinoIcons.star_circle,
+                              size: 40, color: Colors.white),
+                          SizedBox(
+                            width: 10,
                           ),
-                        )))
-              ],
-            )));
+                          MainText(content)
+                        ]),
+                  ),
+                ))));
     // }
   }
 }

@@ -153,6 +153,7 @@ class _DetailState extends State<Detail> {
     IconData _icon;
     Color _status_color;
     final targetListContext = context.watch<TargetListStates>();
+    final constants = context.read<Constants>();
 
     Widget btnEdit = getBtns(
         '编辑', 'imgs/edit_target.webp', Utils.transStr('fbd9ce'), goEdit,
@@ -207,7 +208,7 @@ class _DetailState extends State<Detail> {
                         child: Image(
                             image: AssetImage('imgs/detail.webp'),
                             repeat: ImageRepeat.noRepeat,
-                            width: Utils.getScreenWidth(context)))),
+                            fit: BoxFit.contain))),
                 Positioned(
                   top: 0,
                   bottom: 10,

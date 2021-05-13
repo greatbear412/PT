@@ -19,9 +19,97 @@ class CreateTarget extends StatefulWidget {
 }
 
 class _CreateTargetState extends State<CreateTarget> {
+  Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    // precacheImage(AssetImage('imgs/glove.webp'), context);
+    final targetListContext = context.watch<TargetListStates>();
+    final List<Target> targetListRunning =
+        targetListContext.getTargetList(status: 'running');
+    if (targetListRunning.length < 3) {
+      child = CreateTargetList();
+    } else {
+      child = Center(
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image(
+              image: AssetImage('imgs/panda_gun.webp'),
+              repeat: ImageRepeat.noRepeat,
+              width: 100,
+            ),
+            Container(
+              margin: const EdgeInsets.only(left: 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  MainText('足够了 :)'),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  StyleText(
+                      '已经有三个任务了.',
+                      TextStyle(
+                        color: Colors.white,
+                        fontSize: 22,
+                        fontWeight: FontWeight.bold,
+                      )),
+                ],
+              ),
+            )
+          ],
+        ),
+      );
+    }
+    print('create rebuild');
+    return Scaffold(
+        body: Container(
+            color: Utils.transStr('000'),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Positioned(
+                    top: 50,
+                    left: 0,
+                    right: 0,
+                    child: Center(
+                        child: Image(
+                      image: AssetImage('imgs/create.webp'),
+                      repeat: ImageRepeat.noRepeat,
+                      fit: BoxFit.contain,
+                    ))),
+                Container(
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
+                    child: Container(
+                        // height: 200,
+                        color: Colors.black.withOpacity(0.3),
+                        // padding: const EdgeInsets.only(bottom: 100),
+                        alignment: Alignment.center,
+                        child: child),
+                  ),
+                )
+              ],
+            )));
+  }
+}
+
+// class
+class CreateTargetList extends StatefulWidget {
+  final Target target;
+  CreateTargetList({this.target});
+
+  @override
+  _CreateTargetListState createState() => new _CreateTargetListState();
+}
+
+class _CreateTargetListState extends State<CreateTargetList> {
   TextEditingController _utaskController = TextEditingController();
   TextEditingController _udaysController = TextEditingController();
-  Widget child;
   String toastText = '';
 
   Widget errorGloveWidget = Image(
@@ -82,105 +170,31 @@ class _CreateTargetState extends State<CreateTarget> {
 
   @override
   Widget build(BuildContext context) {
-    precacheImage(AssetImage('imgs/glove.webp'), context);
     final targetListContext = context.watch<TargetListStates>();
-    final List<Target> targetListRunning =
-        targetListContext.getTargetList(status: 'running');
-    if (targetListRunning.length < 3) {
-      child = Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          TextFieldWidget(
-              controller: _utaskController,
-              labelText: "任务",
-              style: TextStyle(color: Colors.white),
-              onChange: onTaskChange),
-          TextFieldWidget(
-              controller: _udaysController,
-              keyboardType: TextInputType.number,
-              labelText: "期限(最大365)",
-              style: TextStyle(color: Colors.white),
-              onChange: onDaysChange,
-              formatter: [WhitelistingTextInputFormatter(RegExp("[0-9]"))]),
-          Listener(
-              onPointerDown: (PointerDownEvent event) =>
-                  submit(targetListContext),
-              child: Container(
-                  margin: const EdgeInsets.only(top: 10),
-                  child: WidgetTransition(
-                      initialChild: gloveWidget, duration: 200)))
-        ],
-      );
-    } else {
-      child = Center(
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image(
-              image: AssetImage('imgs/panda_gun.webp'),
-              repeat: ImageRepeat.noRepeat,
-              width: 100,
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 20),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  MainText('足够了 :)'),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  StyleText(
-                      '已经有三个任务了.',
-                      TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                      )),
-                ],
-              ),
-            )
-          ],
-        ),
-      );
-    }
-    return Scaffold(
-        body: Container(
-            color: Utils.transStr('000'),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Positioned(
-                    top: 50,
-                    left: 0,
-                    right: 0,
-                    child: Center(
-                        child: Image(
-                            image: AssetImage('imgs/create.webp'),
-                            repeat: ImageRepeat.noRepeat,
-                            width: Utils.getScreenWidth(context)))),
-                Container(
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 5.0, sigmaY: 5.0),
-                    child: Container(
-                        // height: 200,
-                        color: Colors.black.withOpacity(0.3),
-                        // padding: const EdgeInsets.only(bottom: 100),
-                        alignment: Alignment.center,
-                        child: GestureDetector(
-                          behavior: HitTestBehavior.translucent,
-                          onTap: () {
-                            // 触摸收起键盘
-                            FocusScope.of(context).requestFocus(FocusNode());
-                          },
-                          child: child,
-                        )),
-                  ),
-                )
-              ],
-            )));
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        TextFieldWidget(
+            controller: _utaskController,
+            labelText: "任务",
+            style: TextStyle(color: Colors.white),
+            onChange: onTaskChange),
+        TextFieldWidget(
+            controller: _udaysController,
+            keyboardType: TextInputType.number,
+            labelText: "期限(最大365)",
+            style: TextStyle(color: Colors.white),
+            onChange: onDaysChange,
+            formatter: [WhitelistingTextInputFormatter(RegExp("[0-9]"))]),
+        Listener(
+            onPointerDown: (PointerDownEvent event) =>
+                submit(targetListContext),
+            child: Container(
+                margin: const EdgeInsets.only(top: 10),
+                child:
+                    WidgetTransition(initialChild: gloveWidget, duration: 200)))
+      ],
+    );
   }
 }

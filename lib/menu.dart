@@ -30,9 +30,9 @@ class _MainMenuState extends State<MainMenu> {
 
   List<Widget> _buildScreens(context) {
     return [
-      MainScreen(menuScreenContext: context, child: TargetList()),
-      MainScreen(menuScreenContext: context, child: CreateTarget()),
-      MainScreen(menuScreenContext: context, child: Management()),
+      TargetList(),
+      CreateTarget(),
+      Management(),
     ];
   }
 
@@ -75,7 +75,7 @@ class _MainMenuState extends State<MainMenu> {
         confineInSafeArea: true,
         backgroundColor: Colors.white,
         handleAndroidBackButtonPress: true,
-        resizeToAvoidBottomInset: true,
+        resizeToAvoidBottomInset: false,
         stateManagement: true,
         navBarHeight: MediaQuery.of(context).viewInsets.bottom > 0
             ? 0.0
@@ -102,21 +102,5 @@ class _MainMenuState extends State<MainMenu> {
             NavBarStyle.style17, // Choose the nav bar style with this property
       ),
     );
-  }
-}
-
-class MainScreen extends StatelessWidget {
-  final BuildContext menuScreenContext;
-  final Widget child;
-  const MainScreen({Key key, this.menuScreenContext, this.child})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-        child: SizedBox(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            child: child));
   }
 }
