@@ -56,15 +56,13 @@ class TextFieldWidget extends StatelessWidget {
   final List<TextInputFormatter> formatter;
 
   TextFieldWidget(
-      {Key key,
-      this.labelText,
-      this.hintText,
+      {this.labelText,
+      this.hintText = '',
       this.controller,
-      this.style,
+      this.style = const TextStyle(),
       this.onChange,
-      this.formatter,
-      this.keyboardType = TextInputType.text})
-      : super(key: key);
+      this.formatter = const [],
+      this.keyboardType = TextInputType.text});
 
   @override
   Widget build(BuildContext context) {

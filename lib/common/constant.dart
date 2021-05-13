@@ -41,11 +41,21 @@ class Constants with ChangeNotifier, DiagnosticableTreeMixin {
     'high': ['拾贝者向你展示一个美妙的贝壳时，他其实是在展示背后的大海.']
   };
 
-  double deviceWidth;
-  double deviceHeight;
+  static double deviceWidth = 0;
+  static double deviceHeight = 0;
   cacheDeviceSize(double width, double height) {
+    assert(width > 0 && height > 0);
     deviceWidth = width;
     deviceHeight = height;
-    // notifyListeners();
+    notifyListeners();
+  }
+
+  getDeviceWidth() {
+    print(deviceWidth);
+    return deviceWidth;
+  }
+
+  getDeviceHeight() {
+    return deviceHeight;
   }
 }

@@ -31,6 +31,7 @@ class Utils {
     int target,
   ) {
     var percent = val / target;
+    assert(Constants != null && Constants.courageList != null);
     if (percent < 0.33) {
       var i = getRandomInit(Constants.courageList['low'].length);
       return Constants.courageList['low'][i];
@@ -45,6 +46,7 @@ class Utils {
 
   static int getDayInWeek() {
     var day = formatDate(DateTime.now(), [DD]);
+    assert(Constants.days[day] != null);
     return Constants.days[day];
   }
 

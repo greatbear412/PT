@@ -11,21 +11,20 @@ import 'pages/management.dart';
 
 class MainMenu extends StatefulWidget {
   final int initialIndex;
-  MainMenu({this.initialIndex});
+  MainMenu({this.initialIndex = 0});
 
   @override
   _MainMenuState createState() => _MainMenuState();
 }
 
 class _MainMenuState extends State<MainMenu> {
-  PersistentTabController _controller;
-  bool _hideNavBar;
+  PersistentTabController _controller = PersistentTabController();
+  bool _hideNavBar = false;
 
   @override
   void initState() {
     super.initState();
     _controller = PersistentTabController(initialIndex: widget.initialIndex);
-    _hideNavBar = false;
   }
 
   List<Widget> _buildScreens(context) {

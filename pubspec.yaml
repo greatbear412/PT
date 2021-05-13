@@ -34,6 +34,8 @@ dependencies:
   table_calendar: ^3.0.0
   persistent_bottom_nav_bar: ^4.0.2
   oktoast: ^3.0.0
+  google_nav_bar: ^5.0.5
+  line_icons:
   # cached_network_image: ^3.0.0
 
 dev_dependencies:

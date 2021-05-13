@@ -78,7 +78,6 @@ class _EditTargetState extends State<EditTarget> {
   Widget build(BuildContext context) {
     precacheImage(AssetImage('imgs/glove.webp'), context);
     final targetListContext = context.watch<TargetListStates>();
-    final constants = context.read<Constants>();
 
     return Scaffold(
         body: Container(

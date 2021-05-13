@@ -4,8 +4,8 @@ import './bus.dart';
 
 class AnimatedImage extends AnimatedWidget {
   final String imgSrc = '';
-  AnimatedImage({Key key, Animation<double> animation, String imgSrc})
-      : super(key: key, listenable: animation);
+  AnimatedImage({Animation<double> animation, String imgSrc})
+      : super(listenable: animation);
 
   Widget build(BuildContext context) {
     final Animation<double> animation = listenable;
@@ -26,7 +26,7 @@ class GrowTransition extends StatelessWidget {
     return new AnimatedBuilder(
         animation: animation,
         builder: (BuildContext context, Widget child) {
-          return new Container(
+          return Container(
               height: animation.value, width: animation.value, child: child);
         },
         child: child);
@@ -34,8 +34,7 @@ class GrowTransition extends StatelessWidget {
 }
 
 class WidgetTransition extends StatefulWidget {
-  WidgetTransition({this.initialChild, this.duration, Key key})
-      : super(key: key);
+  WidgetTransition({this.initialChild, this.duration});
 
   final Widget initialChild;
   final int duration;

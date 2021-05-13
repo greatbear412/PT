@@ -7,7 +7,6 @@ import 'package:oktoast/oktoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
-import 'common/constant.dart';
 import 'states/target.dart';
 import './pages/start.dart';
 
@@ -27,8 +26,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(
-            create: (_) => TargetListStates.fromJson(taskListMap)),
-        ChangeNotifierProvider(create: (_) => Constants())
+            create: (_) => TargetListStates.fromJson(taskListMap))
       ],
       child: MyApp(),
     ),

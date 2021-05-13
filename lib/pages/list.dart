@@ -17,7 +17,7 @@ class TargetList extends StatefulWidget {
 }
 
 class _TargetListState extends State<TargetList> {
-  Widget tlContainer;
+  Widget tlContainer = Container();
   @override
   Widget build(BuildContext context) {
     final targetListContext = context.watch<TargetListStates>();
@@ -283,8 +283,7 @@ class _TargetInfoSignState extends State<TargetInfoSign>
 }
 
 class AnimatedFist extends AnimatedWidget {
-  AnimatedFist({Key key, Animation<double> animation})
-      : super(key: key, listenable: animation);
+  AnimatedFist({Animation<double> animation}) : super(listenable: animation);
 
   Widget build(BuildContext context) {
     final Animation<double> animation = listenable;

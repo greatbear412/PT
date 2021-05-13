@@ -18,11 +18,9 @@ class Finish extends StatefulWidget {
 class _FinishState extends State<Finish> {
   @override
   Widget build(BuildContext context) {
-    final constants = context.read<Constants>();
-
     return Scaffold(
         body: Container(
-            height: constants.deviceHeight,
+            height: Constants.deviceHeight,
             color: Utils.transStr('ffffff'),
             child: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
@@ -113,7 +111,7 @@ class _FinishState extends State<Finish> {
                   Image(
                       image: AssetImage('imgs/finish.webp'),
                       repeat: ImageRepeat.noRepeat,
-                      width: constants.deviceWidth * 0.6)
+                      width: Constants.deviceWidth * 0.6)
                 ],
               ),
             )));

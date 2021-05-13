@@ -153,7 +153,6 @@ class _DetailState extends State<Detail> {
     IconData _icon;
     Color _status_color;
     final targetListContext = context.watch<TargetListStates>();
-    final constants = context.read<Constants>();
 
     Widget btnEdit = getBtns(
         '编辑', 'imgs/edit_target.webp', Utils.transStr('fbd9ce'), goEdit,

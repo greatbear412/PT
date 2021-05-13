@@ -21,7 +21,6 @@ class _ManagementState extends State<Management> {
     final targetListContext = context.watch<TargetListStates>();
     final List<Target> allList =
         targetListContext.getTargetList().reversed.toList();
-    final constants = context.read<Constants>();
 
     var child = allList.length == 0
         ? Center(
@@ -38,9 +37,9 @@ class _ManagementState extends State<Management> {
                 child: Image(
                     image: AssetImage('imgs/management.webp'),
                     repeat: ImageRepeat.noRepeat,
-                    width: constants.deviceWidth * 0.5)),
+                    width: Utils.getScreenWidth(context) * 0.5)),
             Positioned(
-                top: constants.deviceWidth * 0.6,
+                top: Utils.getScreenWidth(context) * 0.6,
                 bottom: 36,
                 left: 0,
                 right: 0,
@@ -58,8 +57,6 @@ class TargetListView extends StatelessWidget {
   TargetListView(this.list);
 
   Widget build(BuildContext context) {
-    final constants = context.read<Constants>();
-
     return ListView.builder(
         scrollDirection: Axis.vertical,
         padding: EdgeInsets.all(10.0),
@@ -102,7 +99,7 @@ class TargetListView extends StatelessWidget {
               _status_color = Utils.transStr(Constants.colorGood);
           }
           return new Container(
-            width: constants.deviceWidth - 50,
+            width: Utils.getScreenWidth(context) - 50,
             margin: const EdgeInsets.fromLTRB(20, 0, 20, 30),
             decoration: BoxDecoration(
               color: _status_color.withOpacity(.5),

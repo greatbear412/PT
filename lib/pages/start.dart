@@ -6,6 +6,7 @@ import 'dart:convert';
 
 import '../main.dart';
 import '../menu.dart';
+import '../gmenu.dart';
 import './finish.dart';
 import '../common/constant.dart';
 import '../states/target.dart';
@@ -19,11 +20,11 @@ class Start extends StatefulWidget {
 }
 
 class _StartState extends State<Start> {
-  bool isNew;
+  bool isNew = true;
 
   void goToCreateTarget(TargetListStates states) {
     int initialIndex = isNew ? 1 : 0;
-    pushNewScreen(context, screen: MainMenu(initialIndex: initialIndex));
+    pushNewScreen(context, screen: GMenu(initialIndex: initialIndex));
   }
 
   @override
@@ -46,10 +47,11 @@ class _StartState extends State<Start> {
   }
 
   /// 缓存设备宽高
-  void cacheDevice(Constants constants) {
-    if (constants.deviceWidth == null || constants.deviceHeight == null) {
-      constants.cacheDeviceSize(
-          Utils.getScreenWidth(context), Utils.getScreenHeight(context));
+  void cacheDevice() {
+    if (Constants.deviceWidth == 0 || Constants.deviceHeight == 0) {
+      Constants.deviceWidth = Utils.getScreenWidth(context);
+      Constants.deviceHeight = Utils.getScreenHeight(context);
+      print(Constants.deviceHeight);
     }
   }
 
@@ -63,10 +65,7 @@ class _StartState extends State<Start> {
     final String content = isNew ? '开始吧 :)' : '继续挑战 ？';
 
     store(targetList);
-
-    final constants = context.read<Constants>();
-    cacheDevice(constants);
-
+    // cacheDevice();
     print('start rebuild');
 
     return Scaffold(
