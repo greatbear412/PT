@@ -77,18 +77,17 @@ class _TargetListState extends State<TargetList> {
           ));
     }
     return Container(
-        padding: const EdgeInsets.only(bottom: 36),
         child: Stack(children: [
-          CommonPosition(Container(
-            color: Utils.transStr(Constants.colorPandaBG),
-            child: FadeInImage(
-              placeholder: AssetImage('imgs/panda.webp'),
-              image: NetworkImage(Constants.bgUrl),
-              fit: BoxFit.cover,
-            ),
-          )),
-          CommonPosition(tlContainer)
-        ]));
+      CommonPosition(Container(
+        color: Utils.transStr(Constants.colorPandaBG),
+        child: FadeInImage(
+          placeholder: AssetImage('imgs/panda.webp'),
+          image: NetworkImage(Constants.bgUrl),
+          fit: BoxFit.cover,
+        ),
+      )),
+      CommonPosition(tlContainer)
+    ]));
   }
 }
 

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 
 import '../main.dart';
-import '../menu.dart';
 import '../gmenu.dart';
 import './finish.dart';
 import '../common/constant.dart';
@@ -24,7 +22,11 @@ class _StartState extends State<Start> {
 
   void goToCreateTarget(TargetListStates states) {
     int initialIndex = isNew ? 1 : 0;
-    pushNewScreen(context, screen: GMenu(initialIndex: initialIndex));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) =>
+                GMenu(initialIndex: initialIndex)));
   }
 
   @override
@@ -46,15 +48,6 @@ class _StartState extends State<Start> {
     prefs?.setString('PTList', json.encode({'data': taskListJson}));
   }
 
-  /// 缓存设备宽高
-  void cacheDevice() {
-    if (Constants.deviceWidth == 0 || Constants.deviceHeight == 0) {
-      Constants.deviceWidth = Utils.getScreenWidth(context);
-      Constants.deviceHeight = Utils.getScreenHeight(context);
-      print(Constants.deviceHeight);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     // precacheImage(NetworkImage(Constants.bgUrl), context);
@@ -65,7 +58,6 @@ class _StartState extends State<Start> {
     final String content = isNew ? '开始吧 :)' : '继续挑战 ？';
 
     store(targetList);
-    // cacheDevice();
     print('start rebuild');
 
     return Scaffold(
@@ -75,31 +67,40 @@ class _StartState extends State<Start> {
                 color: Utils.transStr(Constants.colorPandaBG),
                 image: DecorationImage(
                     image: AssetImage('imgs/panda.webp'), fit: BoxFit.contain)),
-            child: Listener(
-                onPointerDown: (PointerDownEvent event) =>
-                    goToCreateTarget(targetListContext),
-                child: Center(
-                  child: Container(
-                    width: 300,
-                    height: 80,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(8)),
-                        color: Utils.transStr(Constants.colorActive)),
-                    child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(CupertinoIcons.star_circle,
-                              size: 40, color: Colors.white),
-                          SizedBox(
-                            width: 10,
+            child: Stack(
+              children: [
+                Positioned(
+                    bottom: 50,
+                    left: 0,
+                    right: 0,
+                    child: Listener(
+                        onPointerDown: (PointerDownEvent event) =>
+                            goToCreateTarget(targetListContext),
+                        child: Center(
+                          child: Container(
+                            width: 300,
+                            height: 80,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8)),
+                                color: Utils.transStr(Constants.colorActive)),
+                            child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(CupertinoIcons.star_circle,
+                                      size: 40, color: Colors.white),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  MainText(content)
+                                ]),
                           ),
-                          MainText(content)
-                        ]),
-                  ),
-                ))));
+                        )))
+              ],
+            )));
     // }
   }
 }

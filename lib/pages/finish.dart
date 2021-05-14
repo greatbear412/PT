@@ -1,6 +1,5 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../states/target.dart';
 import '../common/util.dart';
@@ -18,10 +17,11 @@ class Finish extends StatefulWidget {
 class _FinishState extends State<Finish> {
   @override
   Widget build(BuildContext context) {
+    print(widget.target);
     return Scaffold(
         body: Container(
-            height: Constants.deviceHeight,
-            color: Utils.transStr('ffffff'),
+            height: Utils.getScreenHeight(context),
+            color: Colors.white60,
             child: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
               child: Column(
@@ -111,7 +111,7 @@ class _FinishState extends State<Finish> {
                   Image(
                       image: AssetImage('imgs/finish.webp'),
                       repeat: ImageRepeat.noRepeat,
-                      width: Constants.deviceWidth * 0.6)
+                      width: Utils.getScreenWidth(context) * 0.6)
                 ],
               ),
             )));

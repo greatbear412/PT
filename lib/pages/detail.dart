@@ -1,7 +1,6 @@
 import 'package:table_calendar/table_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 import 'dart:ui';
 
@@ -94,8 +93,10 @@ class _DetailState extends State<Detail> {
   }
 
   void goEdit(Target target) async {
-    var newTarget = await pushNewScreen(context,
-        screen: EditTarget(target: target), withNavBar: false);
+    var newTarget = await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => EditTarget(target: target)));
     setState(() {
       target = newTarget;
     });

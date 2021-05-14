@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 
+import 'common/util.dart';
+import 'common/constant.dart';
 import 'pages/list.dart';
 import 'pages/create.dart';
 import 'pages/management.dart';
@@ -56,24 +58,29 @@ class _GMenuState extends State<GMenu> {
               rippleColor: Colors.grey[300],
               hoverColor: Colors.grey[100],
               gap: 8,
-              activeColor: Colors.black,
+              activeColor: Utils.transStr(Constants.colorMain),
               iconSize: 24,
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 6),
               duration: Duration(milliseconds: 400),
-              tabBackgroundColor: Colors.grey[100],
-              color: Colors.black,
+              tabBackgroundColor: Colors.white,
+              color: CupertinoColors.systemGrey,
               tabs: [
                 GButton(
-                  icon: LineIcons.home,
-                  text: 'Home',
+                  icon: CupertinoIcons.checkmark_seal_fill,
+                  text: '任务',
+                  iconActiveColor: Utils.transStr(Constants.colorMain),
                 ),
                 GButton(
-                  icon: LineIcons.heart,
-                  text: 'Likes',
+                  icon: CupertinoIcons.add,
+                  iconActiveColor: Utils.transStr(Constants.colorActive),
+                  iconColor: Utils.transStr(Constants.colorActive),
+                  textColor: Utils.transStr(Constants.colorActive),
+                  text: 'Fight!',
                 ),
                 GButton(
-                  icon: LineIcons.search,
-                  text: 'Search',
+                  icon: CupertinoIcons.square_list_fill,
+                  text: '管理',
+                  iconActiveColor: Utils.transStr(Constants.colorMain),
                 ),
               ],
               selectedIndex: _selectedIndex,
