@@ -65,7 +65,7 @@ class _CreateTargetState extends State<CreateTarget> {
         ),
       );
     }
-    print('create rebuild');
+
     return Scaffold(
         body: Container(
             color: Utils.transStr('000'),

@@ -58,7 +58,6 @@ class _StartState extends State<Start> {
     final String content = isNew ? '开始吧 :)' : '继续挑战 ？';
 
     store(targetList);
-    print('start rebuild');
 
     return Scaffold(
         body: Container(
