@@ -7,6 +7,9 @@ import 'package:oktoast/oktoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
+import 'package:flutter/rendering.dart';
+import 'pages/test.dart';
+
 import 'states/target.dart';
 import './pages/start.dart';
 
@@ -49,8 +52,8 @@ class MyApp extends StatelessWidget {
         },
         child: OKToast(
             child: MaterialApp(
-          theme: ThemeData(backgroundColor: Colors.white),
-          home: Start(),
-        )));
+                theme: ThemeData(backgroundColor: Colors.white),
+                home: TestW(),
+                checkerboardOffscreenLayers: true)));
   }
 }

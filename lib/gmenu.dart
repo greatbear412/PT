@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:line_icons/line_icons.dart';
 
 import 'common/util.dart';
 import 'common/constant.dart';
@@ -20,8 +19,6 @@ class GMenu extends StatefulWidget {
 
 class _GMenuState extends State<GMenu> {
   int _selectedIndex;
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.w600);
   static List<Widget> _widgetOptions = <Widget>[
     TargetList(),
     CreateTarget(),

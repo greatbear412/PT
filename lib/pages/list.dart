@@ -97,9 +97,9 @@ class TargetInfoBox extends StatelessWidget {
   final TargetListStates targetListContext;
   TargetInfoBox(this.targetContext, this.targetListContext);
 
-  Widget wgChild;
   @override
   Widget build(BuildContext context) {
+    Widget wgChild;
     // 已完成
     if (targetContext.finishToday) {
       var content = targetContext.title +

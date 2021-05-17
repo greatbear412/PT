@@ -78,7 +78,7 @@ class TargetListStates with ChangeNotifier, DiagnosticableTreeMixin {
             .toList();
   }
 
-  /// 每次启动时自检，并且启动定时器：第二天3点时再次自检(重置所有finish)
+  /// TODO: 每次启动时自检，并且启动定时器：第二天3点时再次自检(重置所有finish)
   void checkLoop() {}
 
   /// Makes `Target` readable inside the devtools by listing all of its properties
