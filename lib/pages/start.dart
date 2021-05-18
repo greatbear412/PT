@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
-import 'dart:convert';
 
-import '../main.dart';
 import '../gmenu.dart';
 import './finish.dart';
 import '../common/constant.dart';
@@ -41,16 +39,9 @@ class _StartState extends State<Start> {
     super.initState();
   }
 
-  /// 读取缓存数据
-  void store(List<Target> targetList) async {
-    var taskListJson =
-        targetList.map((Target target) => target.toString()).toList();
-    prefs?.setString('PTList', json.encode({'data': taskListJson}));
-  }
-
   @override
   Widget build(BuildContext context) {
-    // precacheImage(NetworkImage(Constants.bgUrl), context);
+    precacheImage(NetworkImage(Constants.bgUrl), context);
     final TargetListStates targetListContext =
         context.watch<TargetListStates>();
     final List<Target> targetList = targetListContext.getTargetList();
@@ -58,7 +49,6 @@ class _StartState extends State<Start> {
     final String content = isNew ? '开始吧 :)' : '继续挑战 ？';
 
     targetListContext.checkTargetListStatus();
-    store(targetList);
 
     return Scaffold(
         body: Container(

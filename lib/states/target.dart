@@ -6,6 +6,8 @@ import '../common/util.dart';
 import '../common/constant.dart';
 import '../common/bus.dart';
 
+import '../main.dart';
+
 /// `@status`: 1. 正常； 2.失败； 3. 删除； 99. 完成
 const Map<String, int> statusList = {
   'running': 1,
@@ -25,6 +27,13 @@ class TargetListStates with ChangeNotifier, DiagnosticableTreeMixin {
 
   get taskList => _taskList;
 
+  void notify() {
+    var taskListJson =
+        taskList.map((Target target) => target.toString()).toList();
+    prefs?.setString('PTList', json.encode({'data': taskListJson}));
+    notifyListeners();
+  }
+
   /// 创建；并添加入 `_taskList` 列表
   void create(String title, int days) {
     var valid = getTargetList(status: 'running').length;
@@ -32,40 +41,40 @@ class TargetListStates with ChangeNotifier, DiagnosticableTreeMixin {
       var lastId =
           _taskList.length == 0 ? 0 : _taskList[_taskList.length - 1].id;
       _taskList.add(Target(lastId + 1, title, days));
-      notifyListeners();
+      notify();
     }
   }
 
   /// 修改编辑
   void edit(Target target, String title, int days) {
     target.edit(title, days);
-    notifyListeners();
+    notify();
   }
 
   /// 签到
   void sign(Target target) {
     target.sign();
-    notifyListeners();
+    notify();
   }
 
   /// 删除
   Target delete(Target target) {
     target.delete();
-    notifyListeners();
+    notify();
     return target;
   }
 
   /// 放弃
   Target abolish(Target target) {
     target.abolish();
-    notifyListeners();
+    notify();
     return target;
   }
 
   /// 放弃
   Target reStart(Target target) {
     target.reStart();
-    notifyListeners();
+    notify();
     return target;
   }
 
@@ -99,9 +108,7 @@ class TargetListStates with ChangeNotifier, DiagnosticableTreeMixin {
 
       checkFuture = setCheckFuture(diff);
 
-      setCheckFuture(Duration(milliseconds: 100))
-          .then((value) => notifyListeners());
-      print('ckl running');
+      setCheckFuture(Duration(milliseconds: 100)).then((value) => notify());
     }
   }
 

@@ -7,9 +7,6 @@ import 'package:oktoast/oktoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
-import 'package:flutter/rendering.dart';
-import 'pages/test.dart';
-
 import 'states/target.dart';
 import './pages/start.dart';
 
