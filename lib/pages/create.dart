@@ -183,7 +183,7 @@ class _CreateTargetListState extends State<CreateTargetList> {
         TextFieldWidget(
             controller: _udaysController,
             keyboardType: TextInputType.number,
-            labelText: "期限(最大365)",
+            labelText: "目标(最大365)/次",
             style: TextStyle(color: Colors.white),
             onChange: onDaysChange,
             formatter: [WhitelistingTextInputFormatter(RegExp("[0-9]"))]),
