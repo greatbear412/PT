@@ -53,7 +53,6 @@ class MyApp extends StatelessWidget {
         child: OKToast(
             child: MaterialApp(
                 theme: ThemeData(backgroundColor: Colors.white),
-                home: TestW(),
-                checkerboardOffscreenLayers: true)));
+                home: Start())));
   }
 }

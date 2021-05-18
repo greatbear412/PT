@@ -57,6 +57,7 @@ class _StartState extends State<Start> {
     isNew = targetList.length == 0;
     final String content = isNew ? '开始吧 :)' : '继续挑战 ？';
 
+    targetListContext.checkTargetListStatus();
     store(targetList);
 
     return Scaffold(

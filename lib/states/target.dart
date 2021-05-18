@@ -16,7 +16,7 @@ const Map<String, int> statusList = {
 
 class TargetListStates with ChangeNotifier, DiagnosticableTreeMixin {
   List<Target> _taskList = [];
-
+  Future<dynamic> checkFuture;
   TargetListStates.fromJson(dynamic dataSrc) {
     dataSrc['data'].forEach((res) {
       _taskList.add(Target.fromJson(json.decode(res)));
@@ -78,8 +78,32 @@ class TargetListStates with ChangeNotifier, DiagnosticableTreeMixin {
             .toList();
   }
 
-  /// TODO: 每次启动时自检，并且启动定时器：第二天3点时再次自检(重置所有finish)
-  void checkLoop() {}
+  /// 异步；任务队列自检
+  Future<dynamic> setCheckFuture(Duration dr) async {
+    return Future.delayed(dr).then((value) {
+      for (var i = 0; i < taskList.length; i++) {
+        Target target = taskList[i];
+        target.checkSelf();
+      }
+    });
+  }
+
+  /// 启动时自检；启动定时器（第二天3点时自检）
+  void checkTargetListStatus() {
+    if (checkFuture == null) {
+      DateTime now = DateTime.now();
+      DateTime tomorrow = now.add(Duration(days: 1));
+      DateTime tomorrow3am =
+          DateTime(tomorrow.year, tomorrow.month, tomorrow.day, 3, 0, 0);
+      Duration diff = tomorrow3am.difference(now);
+
+      checkFuture = setCheckFuture(diff);
+
+      setCheckFuture(Duration(milliseconds: 100))
+          .then((value) => notifyListeners());
+      print('ckl running');
+    }
+  }
 
   /// Makes `Target` readable inside the devtools by listing all of its properties
   @override
@@ -153,9 +177,13 @@ class Target {
     Utils.showCommonToast('为自己加油！', Utils.transStr(Constants.colorGood));
   }
 
-  /// TODO: 每次启动时自检：重置所有finishToday；
-  /// 启动定时器：第二天3点时再次自检
-  void checkSelf() {}
+  void checkSelf() {
+    if (DateTime.now().year != this.lastFinish?.year ||
+        DateTime.now().month != this.lastFinish?.month ||
+        DateTime.now().day != this.lastFinish?.day) {
+      this.finishToday = false;
+    }
+  }
 
   //任务是否有效；是否已经达成
   bool checkValid() {
