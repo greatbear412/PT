@@ -3,12 +3,12 @@ import 'dart:async';
 import './bus.dart';
 
 class AnimatedImage extends AnimatedWidget {
-  final String imgSrc = '';
-  AnimatedImage({Animation<double> animation, String imgSrc})
-      : super(listenable: animation);
+  AnimatedImage(this.animation, this.imgSrc);
+
+  final String imgSrc;
+  final Animation<double> animation;
 
   Widget build(BuildContext context) {
-    final Animation<double> animation = listenable;
     return new Center(
       child:
           Image.asset(imgSrc, width: animation.value, height: animation.value),
