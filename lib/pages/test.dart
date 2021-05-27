@@ -13,37 +13,56 @@ class TestW extends StatelessWidget {
             style: TextStyle(color: Colors.black),
           ),
           backgroundColor: Colors.white),
-      body: ListView.builder(
-          itemCount: 100,
-          // 为列表创建 100 个不同颜色的 RowItem
-          itemBuilder: (context, index) => TabRowItem(
-                color: Colors.red, // 设置不同的颜色
-                colorName: 'qweqwe' + index.toString(),
-              )),
+      body: TestWidget(
+        child: TestChildWidget(),
+      ),
     );
-    ;
   }
 }
 
-class TabRowItem extends StatelessWidget {
-  final Color color;
-  final String colorName;
-  TabRowItem({this.color, this.colorName});
+// class TabRowItem extends StatelessWidget {
+//   final Color color;
+//   final String colorName;
+//   TabRowItem({this.color, this.colorName});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(body: Container(child: Text(abc),),);
+//   }
+// }
+
+class TestWidget extends StatefulWidget {
+  final Widget child;
+  TestWidget({this.child});
+
+  @override
+  TestWidgetState createState() => TestWidgetState();
+}
+
+class TestWidgetState extends State<TestWidget> {
+  int count = 0;
 
   @override
   Widget build(BuildContext context) {
-    return ConstrainedBox(
-      constraints: const BoxConstraints(maxHeight: 50),
-      child: Row(
-        children: [
-          Expanded(
-              flex: 1,
-              child: Container(
-                color: this.color,
-              )),
-          Expanded(flex: 3, child: Text(this.colorName))
-        ],
+    print('Parent rebuild');
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        child: Text('button:' + this.count.toString()),
+        onPressed: () {
+          setState(() {
+            count++;
+          });
+        },
       ),
+      body: Container(child: widget.child),
     );
+  }
+}
+
+class TestChildWidget extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    print('child rebuild');
+    return Text('abc');
   }
 }

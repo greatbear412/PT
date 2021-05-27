@@ -60,7 +60,7 @@ class _StartState extends State<Start> {
             child: Stack(
               children: [
                 Positioned(
-                    bottom: 50,
+                    bottom: 20,
                     left: 0,
                     right: 0,
                     child: Listener(
@@ -74,7 +74,7 @@ class _StartState extends State<Start> {
                             decoration: BoxDecoration(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(8)),
-                                color: Utils.transStr(Constants.colorActive)),
+                                border: Border.all(color: Colors.white)),
                             child: Row(
                                 mainAxisSize: MainAxisSize.max,
                                 mainAxisAlignment: MainAxisAlignment.center,

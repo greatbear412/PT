@@ -55,19 +55,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - imgs/fist.webp
-    - imgs/panda.webp
-    - imgs/edit.webp
-    - imgs/create.webp
-    - imgs/glove.webp
-    - imgs/glove_error.webp
-    - imgs/panda_gun.webp
-    - imgs/management.webp
-    - imgs/detail.webp
-    - imgs/abondon.webp
-    - imgs/edit_target.webp
-    - imgs/restart.webp
-    - imgs/finish.webp
+    - imgs/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
