@@ -10,6 +10,8 @@ import 'dart:convert';
 import 'states/target.dart';
 import './pages/start.dart';
 
+import './common/constant.dart';
+
 SharedPreferences prefs;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -43,6 +45,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    precacheImage(NetworkImage(Constants.bgUrl), context);
     return GestureDetector(
         onTap: () {
           WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();

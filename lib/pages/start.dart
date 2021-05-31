@@ -7,16 +7,24 @@ import './finish.dart';
 import '../common/constant.dart';
 import '../states/target.dart';
 import '../common/util.dart';
-import '../components/text.dart';
 import '../common/bus.dart';
+import '../common/animation.dart';
 
 class Start extends StatefulWidget {
   @override
   _StartState createState() => new _StartState();
 }
 
-class _StartState extends State<Start> {
+class _StartState extends State<Start> with TickerProviderStateMixin {
   bool isNew = true;
+  int dur;
+  int repeatTimes;
+  int cyberItemCount;
+  Animation animation;
+  AnimationController animationController;
+  TargetListStates targetListContext;
+
+  _StartState({this.dur = 1000, this.repeatTimes = 2, this.cyberItemCount = 7});
 
   void goToCreateTarget(TargetListStates states) {
     int initialIndex = isNew ? 1 : 0;
@@ -36,61 +44,31 @@ class _StartState extends State<Start> {
           MaterialPageRoute(
               builder: (BuildContext context) => Finish(target: target)));
     });
+    Future.delayed(Duration(milliseconds: (dur * repeatTimes * 1.8).floor()))
+        .then((value) => goToCreateTarget(targetListContext));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    precacheImage(NetworkImage(Constants.bgUrl), context);
-    final TargetListStates targetListContext =
-        context.watch<TargetListStates>();
-    final List<Target> targetList = targetListContext.getTargetList();
-    isNew = targetList.length == 0;
-    final String content = isNew ? '开始吧 :)' : '继续挑战 ？';
-
+    targetListContext = context.watch<TargetListStates>();
     targetListContext.checkTargetListStatus();
 
     return Scaffold(
         body: Container(
-            padding: const EdgeInsets.only(bottom: 50),
-            decoration: BoxDecoration(
-                color: Utils.transStr(Constants.colorPandaBG),
-                image: DecorationImage(
-                    image: AssetImage('imgs/panda.webp'), fit: BoxFit.contain)),
-            child: Stack(
-              children: [
-                Positioned(
-                    bottom: 20,
-                    left: 0,
-                    right: 0,
-                    child: Listener(
-                        onPointerDown: (PointerDownEvent event) =>
-                            goToCreateTarget(targetListContext),
-                        child: Center(
-                          child: Container(
-                            width: 300,
-                            height: 80,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(8)),
-                                border: Border.all(color: Colors.white)),
-                            child: Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Icon(CupertinoIcons.star_circle,
-                                      size: 40, color: Colors.white),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  MainText(content)
-                                ]),
-                          ),
-                        )))
-              ],
-            )));
+      child: Center(
+        child: CyberPunk(
+          child: Image(image: AssetImage('imgs/panda_cyber.webp')),
+          dur: dur,
+          maxHeight: 300,
+          cyberItemCount: cyberItemCount,
+          repeatTimes: repeatTimes,
+        ),
+      ),
+      decoration: BoxDecoration(
+        color: Utils.transStr(Constants.colorPandaBG),
+      ),
+    ));
     // }
   }
 }

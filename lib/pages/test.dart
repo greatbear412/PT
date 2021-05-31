@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 
+import 'create.dart';
+
 class TestW extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -49,9 +51,13 @@ class TestWidgetState extends State<TestWidget> {
       floatingActionButton: FloatingActionButton(
         child: Text('button:' + this.count.toString()),
         onPressed: () {
-          setState(() {
-            count++;
-          });
+          // setState(() {
+          //   count++;
+          // });
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => CreateTarget()));
         },
       ),
       body: Container(child: widget.child),

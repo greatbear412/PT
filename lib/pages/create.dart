@@ -11,9 +11,6 @@ import '../components/text.dart';
 import '../common/constant.dart';
 
 class CreateTarget extends StatefulWidget {
-  final Target target;
-  CreateTarget({this.target});
-
   @override
   _CreateTargetState createState() => new _CreateTargetState();
 }
@@ -100,9 +97,6 @@ class _CreateTargetState extends State<CreateTarget> {
 
 // class
 class CreateTargetList extends StatefulWidget {
-  final Target target;
-  CreateTargetList({this.target});
-
   @override
   _CreateTargetListState createState() => new _CreateTargetListState();
 }
