@@ -28,11 +28,25 @@ class _StartState extends State<Start> with TickerProviderStateMixin {
 
   void goToCreateTarget(TargetListStates states) {
     int initialIndex = isNew ? 1 : 0;
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (BuildContext context) =>
-                GMenu(initialIndex: initialIndex)));
+    // Navigator.push(
+    //     context,
+    //     MaterialPageRoute(
+    //         builder: (BuildContext context) =>
+    //             GMenu(initialIndex: initialIndex)));
+    Navigator.pushReplacement(
+      context,
+      PageRouteBuilder(
+        transitionDuration: Duration(milliseconds: 1000), //动画时间为500毫秒
+        pageBuilder: (BuildContext context, Animation animation,
+            Animation secondaryAnimation) {
+          return new FadeTransition(
+            //使用渐隐渐入过渡,
+            opacity: animation,
+            child: GMenu(initialIndex: initialIndex), //路由B
+          );
+        },
+      ),
+    );
   }
 
   @override
@@ -44,7 +58,7 @@ class _StartState extends State<Start> with TickerProviderStateMixin {
           MaterialPageRoute(
               builder: (BuildContext context) => Finish(target: target)));
     });
-    Future.delayed(Duration(milliseconds: (dur * repeatTimes * 1.8).floor()))
+    Future.delayed(Duration(milliseconds: (dur * repeatTimes * 1.5).floor()))
         .then((value) => goToCreateTarget(targetListContext));
     super.initState();
   }
@@ -53,6 +67,8 @@ class _StartState extends State<Start> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     targetListContext = context.watch<TargetListStates>();
     targetListContext.checkTargetListStatus();
+
+    isNew = targetListContext.getTargetList(status: 'running').length == 0;
 
     return Scaffold(
         body: Container(

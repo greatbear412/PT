@@ -127,14 +127,17 @@ class Target {
   bool finishToday;
   List<String> finishHistory;
   DateTime startTime;
+  String recordToday;
+  List<Map<String, dynamic>> recordHistory;
 
   int status;
   DateTime lastFinish;
 
   Target(this.id, this.title, this.days,
-      {this.status = 1, this.finishToday = false})
+      {this.status = 1, this.finishToday = false, this.recordToday = ''})
       : startTime = DateTime.now(),
-        finishHistory = [];
+        finishHistory = [],
+        recordHistory = [];
 
   Target.fromJson(Map<String, dynamic> dataSrc)
       : id = dataSrc['id'],
@@ -151,11 +154,17 @@ class Target {
   }
 
   void sign() {
+    // TODO: 心情更新时，如何更新数据库
     this.finishToday = true;
     this.finishHistory.add(Utils.getFormatDate(DateTime.now()));
     this.lastFinish = DateTime.now();
     Utils.showCommonToast('给力！', Utils.transStr(Constants.colorSuccess));
     this.checkValid();
+  }
+
+  void writeRecord(String value) {
+    var record = {'date': Utils.getFormatDate(DateTime.now()), 'record': value};
+    this.finishHistory.add(record.toString());
   }
 
   void edit(String title, int days) {
@@ -181,6 +190,7 @@ class Target {
     this.finishToday = false;
     this.lastFinish = null;
     this.startTime = DateTime.now();
+    this.recordToday = '';
     Utils.showCommonToast('为自己加油！', Utils.transStr(Constants.colorGood));
   }
 
@@ -189,6 +199,7 @@ class Target {
         DateTime.now().month != this.lastFinish?.month ||
         DateTime.now().day != this.lastFinish?.day) {
       this.finishToday = false;
+      this.recordToday = '';
     }
   }
 

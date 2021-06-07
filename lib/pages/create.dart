@@ -89,7 +89,39 @@ class _CreateTargetState extends State<CreateTarget> {
                         alignment: Alignment.center,
                         child: child),
                   ),
-                )
+                ),
+                Positioned(
+                    bottom: 50,
+                    left: 50,
+                    right: 50,
+                    child: Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          left: BorderSide(
+                            width: 2, //宽度
+                            color: Utils.transStr(Constants.colorError), //边框颜色
+                          ),
+                        ),
+                        // color: Colors.white.withOpacity(.3)
+                      ),
+                      child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            StyleText(
+                              '“',
+                              TextStyle(
+                                color: Utils.transStr(Constants.colorError),
+                                fontSize: 35,
+                                fontWeight: FontWeight.w300,
+                              ),
+                              lines: 1,
+                            ),
+                            TargetInfoSubText()
+                          ]),
+                    ))
               ],
             )));
   }
@@ -189,6 +221,34 @@ class _CreateTargetListState extends State<CreateTargetList> {
                 child:
                     WidgetTransition(initialChild: gloveWidget, duration: 200)))
       ],
+    );
+  }
+}
+
+// 任务信息
+class TargetInfoSubText extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    String content = Utils.getPercentText();
+    return StyleText(
+      content,
+      TextStyle(
+        color: Utils.transStr('ffffff'),
+        fontSize: 18,
+        fontWeight: FontWeight.w300,
+      ),
+      lines: 3,
+    );
+  }
+}
+
+class TargetInfoRedFlag extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(color: Utils.transStr(Constants.colorError)),
+      width: 5,
+      height: 30,
     );
   }
 }

@@ -37,10 +37,7 @@ class MainText extends StatelessWidget {
     return StyleText(
         text,
         TextStyle(
-          color: Colors.white,
-          fontSize: 28,
-          fontWeight: FontWeight.bold,
-        ),
+            color: Colors.white, fontSize: 28, fontWeight: FontWeight.bold),
         lines: lines);
   }
 }

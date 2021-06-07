@@ -99,7 +99,7 @@ class TargetInfoBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Widget wgChild;
+    List<Widget> wgChild;
     // 已完成
     if (targetContext.finishToday) {
       var content = targetContext.title +
@@ -108,57 +108,61 @@ class TargetInfoBox extends StatelessWidget {
           '/' +
           targetContext.days.toString() +
           ')';
-      wgChild = ConstrainedBox(
-        constraints: BoxConstraints(maxHeight: 60.0),
-        child: Row(
-          children: [
-            TargetInfoRedFlag(targetContext),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                child: MainText(content),
-              ),
-            )
-          ],
+      wgChild = [
+        SizedBox(
+          width: 20,
         ),
-      );
-    } else {
-      wgChild = ConstrainedBox(
-        constraints:
-            BoxConstraints(minWidth: double.infinity, maxHeight: 120.0),
-        child: Container(
-            child: Row(mainAxisSize: MainAxisSize.max, children: [
-          TargetInfoRedFlag(targetContext),
-          Expanded(
-              flex: 1,
-              child: Container(
-                decoration:
-                    // 信息板背景
-                    BoxDecoration(
-                        color: Utils.transStr(Constants.colorMain)
-                            .withOpacity(.6)),
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
-                  child: Flex(direction: Axis.horizontal, children: [
-                    Expanded(flex: 3, child: TargetInfoText(targetContext)),
-                    Expanded(
-                        flex: 1,
-                        child: TargetInfoSign(targetContext, targetListContext))
-                  ]),
+        Expanded(
+            flex: 3,
+            child: StyleText(
+                content,
+                TextStyle(
+                  color: Colors.grey,
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.lineThrough,
                 ),
-              ))
-        ])),
-      )
-          // 进行中
-          ;
+                lines: 1))
+      ];
+    } else {
+      wgChild = [
+        SizedBox(
+          width: 20,
+        ),
+        Expanded(flex: 3, child: TargetInfoText(targetContext)),
+        Expanded(
+            flex: 1, child: TargetInfoSign(targetContext, targetListContext))
+      ];
     }
     return Container(
         decoration: BoxDecoration(boxShadow: [
           //阴影
           BoxShadow(
               color: Colors.black54, offset: Offset(0.0, 4.0), blurRadius: 5.0)
-        ]),
-        child: wgChild);
+        ], borderRadius: BorderRadius.all(Radius.circular(16.0))),
+        child: ConstrainedBox(
+          constraints:
+              BoxConstraints(minWidth: double.infinity, maxHeight: 120.0),
+          child: Container(
+              child: Row(mainAxisSize: MainAxisSize.max, children: [
+            // TargetInfoRedFlag(targetContext),
+            Expanded(
+                flex: 1,
+                child: Container(
+                  decoration:
+                      // 信息板背景
+                      BoxDecoration(
+                          color: Utils.transStr(Constants.colorMain)
+                              .withOpacity(.6),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(16.0))),
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(10, 15, 10, 15),
+                    child: Flex(direction: Axis.horizontal, children: wgChild),
+                  ),
+                ))
+          ])),
+        ));
   }
 }
 
@@ -191,32 +195,7 @@ class TargetInfoText extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           MainText(targetContext.title),
-          SizedBox(
-            height: 10,
-          ),
-          TargetInfoSubText(targetContext)
         ]);
-  }
-}
-
-// 任务信息
-class TargetInfoSubText extends StatelessWidget {
-  final Target targetContext;
-  TargetInfoSubText(this.targetContext);
-
-  @override
-  Widget build(BuildContext context) {
-    String content = Utils.getPercentText(
-        targetContext.finishHistory.length, targetContext.days);
-    return StyleText(
-      content,
-      TextStyle(
-        color: Utils.transStr('ffffe7'),
-        fontSize: 12,
-        fontWeight: FontWeight.w300,
-      ),
-      lines: 3,
-    );
   }
 }
 
@@ -278,6 +257,40 @@ class _TargetInfoSignState extends State<TargetInfoSign>
     //路由销毁时需要释放动画资源
     controller.dispose();
     super.dispose();
+  }
+}
+
+class TargetInfoRecord extends StatefulWidget {
+  final Target targetContext;
+  final TargetListStates targetListContext;
+  TargetInfoRecord(this.targetContext, this.targetListContext);
+
+  @override
+  _TargetInfoRecordState createState() => new _TargetInfoRecordState();
+}
+
+class _TargetInfoRecordState extends State<TargetInfoRecord> {
+  final double widthFactorStart = 0.5;
+
+  bool writeRecord() {
+    widget.targetListContext.sign(widget.targetContext);
+    return false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    const String imgSrc = "imgs/fist.webp";
+    var imgWidget = Image(image: AssetImage(imgSrc));
+
+    return Listener(
+      child: Stack(
+        children: [
+          CommonPosition(FractionallySizedBox(
+              widthFactor: widthFactorStart, child: imgWidget)),
+        ],
+      ),
+      onPointerDown: (PointerDownEvent event) => writeRecord(),
+    );
   }
 }
 

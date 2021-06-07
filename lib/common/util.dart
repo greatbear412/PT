@@ -26,22 +26,9 @@ class Utils {
     }
   }
 
-  static String getPercentText(
-    int val,
-    int target,
-  ) {
-    var percent = val / target;
-    assert(Constants != null && Constants.courageList != null);
-    if (percent < 0.33) {
-      var i = getRandomInit(Constants.courageList['low'].length);
-      return Constants.courageList['low'][i];
-    } else if (percent < 0.66) {
-      var i = getRandomInit(Constants.courageList['low'].length);
-      return Constants.courageList['low'][i];
-    } else {
-      var i = getRandomInit(Constants.courageList['low'].length);
-      return Constants.courageList['low'][i];
-    }
+  static String getPercentText() {
+    var i = getRandomInit(Constants.courageList.length);
+    return Constants.courageList[i];
   }
 
   static int getDayInWeek() {
